@@ -1,7 +1,7 @@
--- Criar o banco de dados caso não exista
+-- Criar a base de dados caso nao exista
 CREATE DATABASE IF NOT EXISTS monitoramento;
 
--- Usar o banco de dados
+-- Usar a base de dados
 USE monitoramento;
 
 -- Criar a tabela para armazenar os dados de rede
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS dados_rede (
     upload_mbps FLOAT
 );
 
--- Criar o usuário 'monitor' com uma senha segura
+-- Criar o utilizador 'monitor' com uma senha segura
 CREATE USER IF NOT EXISTS 'monitor'@'localhost' IDENTIFIED BY 'senha_segura';
 
--- Conceder permissões para o usuário acessar o banco
+-- Conceder permissões para o utilizador acessar a base de dados
 GRANT ALL PRIVILEGES ON monitoramento.* TO 'monitor'@'localhost';
 
 -- Atualizar privilégios
