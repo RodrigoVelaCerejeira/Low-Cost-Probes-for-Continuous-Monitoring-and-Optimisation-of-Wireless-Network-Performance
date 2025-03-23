@@ -1,0 +1,9 @@
+[Unit]
+Description=Timer para executar o script login a cada 5 minutos
+
+[Timer]
+OnUnitActiveSec=10s
+Persistent=false
+
+[Install]
+WantedBy=timers.target
