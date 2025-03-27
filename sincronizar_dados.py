@@ -4,7 +4,7 @@ import mariadb
 def conectar_local():
     try:
         conn = mariadb.connect(
-            host="localhost", #IP REAL DO SERVIDOR CENTRAL (ATENÇÃO)
+            host="localhost",  # Banco de dados local
             user="monitor",
             password="senha_segura",
             database="monitoramento"
@@ -18,16 +18,39 @@ def conectar_local():
 def conectar_central():
     try:
         conn = mariadb.connect(
-            host="100.68.11.69",  # Substitua pelo IP da base central
+            host="100.68.11.69",  # IP do banco de dados central
             user="rodrigo",
             password="senha_segura",
             database="central_monitoramento"
         )
-        print("Conexão com o banco de dados central bem-sucedida!")  # Adiciona print de sucesso
+        print("Conexão com o banco de dados central bem-sucedida!")
         return conn
     except mariadb.Error as e:
         print(f"Erro ao conectar ao MariaDB central: {e}")
         return None
+
+# Função para inserir Raspberry Pi na tabela central, se não existir
+def inserir_raspberrypi_central(conn_central, mac_address, ip_local, ip_externo):
+    cursor_central = conn_central.cursor()
+    # Verifica se o raspberrypi_id já existe na tabela central
+    cursor_central.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
+    result = cursor_central.fetchone()
+
+    # Se o Raspberry Pi não existir, insira-o
+    if not result:
+        print(f"Inserindo Raspberry Pi {mac_address} na tabela central.")
+        cursor_central.execute("""
+            INSERT INTO raspberrypis (mac_address, ip_local, ip_externo, status)
+            VALUES (?, ?, ?, ?)
+        """, (mac_address, ip_local, ip_externo, 'ativo'))
+        conn_central.commit()
+        print(f"Raspberry Pi {mac_address} inserido com sucesso!")
+    else:
+        print(f"Raspberry Pi {mac_address} já existe na tabela central.")
+    # Retorna o id do Raspberry Pi inserido ou existente
+    cursor_central.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
+    raspberrypi_id = cursor_central.fetchone()[0]
+    return raspberrypi_id
 
 # Função para sincronizar dados da tabela dados_rede
 def sincronizar_dados():
@@ -44,17 +67,19 @@ def sincronizar_dados():
             dados = cursor_local.fetchall()
 
             for dado in dados:
-                # Verificar se o Raspberry Pi já existe na tabela central, se não, inserir
                 raspberrypi_id = dado[6]  # Raspberry Pi ID da tabela local
-                cursor_central.execute("SELECT id FROM raspberrypis WHERE id = ?", (raspberrypi_id,))
-                result = cursor_central.fetchone()
+                mac_address = dado[0]  # Supondo que o mac_address esteja na posição 0 (ajustar conforme necessário)
+                ip_local = dado[1]  # IP Local
+                ip_externo = dado[2]  # IP Externo
 
-                if result:
-                    # Se o Raspberry Pi já existe, insira os dados de rede na tabela dados_rede
-                    cursor_central.execute("""
-                        INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                    """, dado[1:8])  # Inserir dados de índice 1 a 7 (sem o id da tabela dados_rede)
+                # Inserir o Raspberry Pi na tabela central, se necessário
+                raspberrypi_id_central = inserir_raspberrypi_central(conn_central, mac_address, ip_local, ip_externo)
+
+                # Inserir os dados na tabela dados_rede no banco de dados central
+                cursor_central.execute("""
+                    INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (ip_local, ip_externo, dado[2], dado[3], dado[4], dado[5], raspberrypi_id_central))
 
                 conn_central.commit()
 
