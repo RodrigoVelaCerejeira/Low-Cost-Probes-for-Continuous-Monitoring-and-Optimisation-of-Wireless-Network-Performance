@@ -72,6 +72,20 @@ def conectar_db():
         print(f"Erro ao conectar à base de dados: {e}")
         return None
 
+def conectar_central():
+    try:
+        conn = mariadb.connect(
+            host="100.68.11.69",  # Endereço do servidor central
+            user="rodrigo",        # Verifique o nome correto do usuário
+            password="senha_segura",  # Senha do usuário 'rodrigo'
+            database="central_monitoramento"
+        )
+        print("Conexão com o banco de dados central bem-sucedida!")  # Adiciona print de sucesso
+        return conn
+    except mariadb.Error as e:
+        print(f"Erro ao conectar ao MariaDB central: {e}")
+        return None
+
 def inserir_dados(latencia, perda_pacotes, download, upload):
     conn = conectar_db()
     if conn:
@@ -80,6 +94,8 @@ def inserir_dados(latencia, perda_pacotes, download, upload):
             ip_local = get_local_ip()
             ip_externo = get_external_ip()
             mac_address = get_mac_address()  # Obter o mac_address do Raspberry Pi
+
+            print(f"Inserindo dados para o MAC: {mac_address}")  # Verifique o mac_address aqui
 
             # Verificar se o raspberrypi já existe na base de dados
             cursor.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
@@ -90,8 +106,8 @@ def inserir_dados(latencia, perda_pacotes, download, upload):
             else:
                 print(f"⚠️ MAC {mac_address} não encontrado na base de dados. Inserindo agora...")
                 # Inserir o mac_address, ip_local e ip_externo na tabela raspberrypis
-                cursor.execute("""
-                    INSERT INTO raspberrypis (mac_address, ip_local, ip_externo, status)
+                cursor.execute(""" 
+                    INSERT INTO raspberrypis (mac_address, ip_local, ip_externo, status) 
                     VALUES (?, ?, ?, ?)
                 """, (mac_address, ip_local, ip_externo, 'ativo'))
 
@@ -102,8 +118,8 @@ def inserir_dados(latencia, perda_pacotes, download, upload):
                 print(f"MAC {mac_address} inserido com sucesso! ID: {raspberrypi_id}")
 
             # Inserir os dados na tabela dados_rede
-            cursor.execute("""
-                INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id)
+            cursor.execute(""" 
+                INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, raspberrypi_id))
 
@@ -116,6 +132,7 @@ def inserir_dados(latencia, perda_pacotes, download, upload):
             conn.close()
     else:
         print("Erro ao conectar à base de dados para inserção de dados.")
+
 
 # 🔄 Loop para coleta contínua
 
