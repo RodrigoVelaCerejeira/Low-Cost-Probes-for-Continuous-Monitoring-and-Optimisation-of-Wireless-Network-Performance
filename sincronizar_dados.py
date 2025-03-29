@@ -63,23 +63,31 @@ def sincronizar_dados():
             cursor_central = conn_central.cursor()
 
             # Selecionar os dados da tabela dados_rede na base de dados local
-            cursor_local.execute("SELECT ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id FROM dados_rede")
+            cursor_local.execute("SELECT ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, raspberrypi_id FROM dados_rede")
             dados = cursor_local.fetchall()
 
             for dado in dados:
-                raspberrypi_id = dado[6]  # Raspberry Pi ID da tabela local
+                raspberrypi_id = dado[10]  # Raspberry Pi ID da tabela local
                 mac_address = dado[0]  # Supondo que o mac_address esteja na posição 0 (ajustar conforme necessário)
                 ip_local = dado[1]  # IP Local
                 ip_externo = dado[2]  # IP Externo
+                latencia = dado[3]  # Latência
+                perda_pacotes = dado[4]  # Perda de pacotes
+                download = dado[5]  # Download
+                upload = dado[6]  # Upload
+                rtt_min = dado[7]  # RTT Mínimo
+                rtt_avg = dado[8]  # RTT Médio
+                rtt_max = dado[9]  # RTT Máximo
+                rtt_mdev = dado[10]  # RTT Mdev
 
                 # Inserir o Raspberry Pi na tabela central, se necessário
                 raspberrypi_id_central = inserir_raspberrypi_central(conn_central, mac_address, ip_local, ip_externo)
 
                 # Inserir os dados na tabela dados_rede no banco de dados central
                 cursor_central.execute("""
-                    INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                """, (ip_local, ip_externo, dado[2], dado[3], dado[4], dado[5], raspberrypi_id_central))
+                    INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id, rtt_min, rtt_avg, rtt_max, rtt_mdev)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, raspberrypi_id_central, rtt_min, rtt_avg, rtt_max, rtt_mdev))
 
                 conn_central.commit()
 
