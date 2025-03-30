@@ -1,0 +1,62 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+
+<script setup>
+import RaspberrySelector from '../components/RaspberrySelector.vue';
+</script>
+
+<template>
+  <div class="dashboard-page">
+    <h1>Raspberry Pi Network Monitoring Overview</h1>
+    <div class="boxes">
+      <div class="box_rp">
+        <RaspberrySelector />
+      </div>
+    </div>
+    <div class="all_rp">
+      <h2>Overview of Connected Raspberry Pis:</h2>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.dashboard-page {
+  min-height: 100vh;
+  background-color: #17072b;
+  text-align: center;
+  padding: 20px;
+  padding-top: 80px;
+}
+
+h1 {
+  color: #FFFFFF;
+  font-size: 50px;
+  margin-bottom: 50px;
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+  color: #FFFFFF;
+  font-size: 25px;
+  text-align: left;
+  margin-left: 10px;
+  margin-bottom: 25px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.boxes {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+
+.box_rp {
+  width: 300px;
+  height: 120px;
+  padding: 15px;
+  border-radius: 25px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+</style>
