@@ -123,6 +123,7 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
             ip_local = get_local_ip()
             ip_externo = get_external_ip()
             mac_address = get_mac_address()  # Obter o mac_address do Raspberry Pi
+
             # Verificar se o raspberrypi já existe na base de dados
             cursor.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
             result = cursor.fetchone()
@@ -141,11 +142,15 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
                 cursor.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
                 raspberrypi_id = cursor.fetchone()[0]
 
+            # Garantir que valores nulos não sejam passados para download e upload
+            download = download if download is not None else 0.0
+            upload = upload if upload is not None else 0.0
+
             # Inserir os dados na tabela dados_rede
             cursor.execute("""
-                INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id, rtt_min, rtt_avg, rtt_max, rtt_mdev)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, raspberrypi_id, rtt_min, rtt_avg, rtt_max, rtt_mdev))
+                INSERT INTO dados_rede (raspberrypi_id, timestamp, ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev)
+                VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (raspberrypi_id, ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev))
 
             conn.commit()
 
