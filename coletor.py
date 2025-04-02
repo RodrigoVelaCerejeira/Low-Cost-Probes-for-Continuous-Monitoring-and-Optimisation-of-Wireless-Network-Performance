@@ -114,7 +114,21 @@ def get_mac_address():
             return mac
     return "Desconhecido"
 
-# Função para inserir dados na base de dados
+import subprocess
+
+# Função para verificar se o Raspberry Pi está conectado à rede
+def is_connected(ip):
+    try:
+        # Executar o comando ping e verificar a resposta
+        result = subprocess.run(["ping", "-c", "1", ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode == 0:
+            return True  # Conectado
+        else:
+            return False  # Não conectado
+    except Exception as e:
+        print(f"Erro ao verificar conectividade com {ip}: {e}")
+        return False
+
 def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev):
     conn = conectar_db()
     if conn:
@@ -122,37 +136,25 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
             cursor = conn.cursor()
             ip_local = get_local_ip()
             ip_externo = get_external_ip()
-            mac_address = get_mac_address()  # Obter o mac_address do Raspberry Pi
 
-            # Verificar se o raspberrypi já existe na base de dados
-            cursor.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
-            result = cursor.fetchone()
+            # Consultar todos os Raspberry Pis com status 'ativo'
+            cursor.execute("SELECT mac_address, raspberrypi_id, ip_local FROM raspberrypis WHERE status = 'ativo'")
+            ativos = cursor.fetchall()
 
-            if result:
-                raspberrypi_id = result[0]  # Se encontrado, usar o ID existente
-            else:
-                # Inserir o mac_address, ip_local e ip_externo na tabela raspberrypis
-                cursor.execute("""
-                    INSERT INTO raspberrypis (mac_address, ip_local, ip_externo, status)
-                    VALUES (?, ?, ?, ?)
-                """, (mac_address, ip_local, ip_externo, 'ativo'))
+            for mac_address, raspberrypi_id, ip in ativos:
+                # Verificar se o Raspberry Pi está realmente conectado à rede
+                if is_connected(ip):
+                    # Se estiver conectado, coletemos os dados
+                    print(f"Coletando dados para Raspberry Pi com ID {raspberrypi_id} (MAC: {mac_address})")
 
-                # Confirmar a inserção e obter o novo ID
-                conn.commit()
-                cursor.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
-                raspberrypi_id = cursor.fetchone()[0]
+                    cursor.execute("""
+                        INSERT INTO dados_rede (raspberrypi_id, timestamp, ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev)
+                        VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """, (raspberrypi_id, ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev))
 
-            # Garantir que valores nulos não sejam passados para download e upload
-            download = download if download is not None else 0.0
-            upload = upload if upload is not None else 0.0
-
-            # Inserir os dados na tabela dados_rede
-            cursor.execute("""
-                INSERT INTO dados_rede (raspberrypi_id, timestamp, ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev)
-                VALUES (?, CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (raspberrypi_id, ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev))
-
-            conn.commit()
+                    conn.commit()
+                else:
+                    print(f"Raspberry Pi com ID {raspberrypi_id} (MAC: {mac_address}) não está conectado à rede. Ignorando coleta de dados.")
 
         except mariadb.Error as e:
             print(f"Erro ao inserir dados: {e}")
