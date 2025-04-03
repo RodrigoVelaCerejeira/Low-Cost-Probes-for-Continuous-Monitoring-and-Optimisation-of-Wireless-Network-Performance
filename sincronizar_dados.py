@@ -47,6 +47,7 @@ def inserir_raspberrypi_central(conn_central, mac_address, ip_local, ip_externo)
         print(f"Raspberry Pi {mac_address} inserido com sucesso!")
     else:
         print(f"Raspberry Pi {mac_address} já existe na tabela central.")
+    
     # Retorna o id do Raspberry Pi inserido ou existente
     cursor_central.execute("SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
     raspberrypi_id = cursor_central.fetchone()[0]
@@ -68,17 +69,26 @@ def sincronizar_dados():
 
             for dado in dados:
                 raspberrypi_id = dado[10]  # Raspberry Pi ID da tabela local
-                mac_address = dado[0]  # Supondo que o mac_address esteja na posição 0 (ajustar conforme necessário)
-                ip_local = dado[1]  # IP Local
-                ip_externo = dado[2]  # IP Externo
-                latencia = dado[3]  # Latência
-                perda_pacotes = dado[4]  # Perda de pacotes
-                download = dado[5]  # Download
-                upload = dado[6]  # Upload
-                rtt_min = dado[7]  # RTT Mínimo
-                rtt_avg = dado[8]  # RTT Médio
-                rtt_max = dado[9]  # RTT Máximo
-                rtt_mdev = dado[10]  # RTT Mdev
+                ip_local = dado[0]  # IP Local
+                ip_externo = dado[1]  # IP Externo
+                latencia = dado[2]  # Latência
+                perda_pacotes = dado[3]  # Perda de pacotes
+                download = dado[4]  # Download
+                upload = dado[5]  # Upload
+                rtt_min = dado[6]  # RTT Mínimo
+                rtt_avg = dado[7]  # RTT Médio
+                rtt_max = dado[8]  # RTT Máximo
+                rtt_mdev = dado[9]  # RTT Mdev
+
+                # Usar raspberrypi_id para pegar o mac_address da tabela local
+                cursor_local.execute("SELECT mac_address FROM raspberrypis WHERE id = ?", (raspberrypi_id,))
+                mac_address_result = cursor_local.fetchone()
+                
+                if mac_address_result:
+                    mac_address = mac_address_result[0]  # O mac_address está na primeira coluna
+                else:
+                    print(f"Erro: Raspberry Pi com ID {raspberrypi_id} não encontrado na tabela local.")
+                    continue  # Pula para o próximo Raspberry Pi
 
                 # Inserir o Raspberry Pi na tabela central, se necessário
                 raspberrypi_id_central = inserir_raspberrypi_central(conn_central, mac_address, ip_local, ip_externo)
