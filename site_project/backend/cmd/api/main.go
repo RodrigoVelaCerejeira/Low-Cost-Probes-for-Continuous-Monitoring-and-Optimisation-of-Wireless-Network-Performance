@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-    dsn := "gotester:testpass@tcp(localhost:3306)/gotestdb"
+    dsn := "monitor:senha_segura@tcp(localhost:3306)/central_monitoramento"
     database.Init(dsn)
     log.SetReportCaller(true)
 

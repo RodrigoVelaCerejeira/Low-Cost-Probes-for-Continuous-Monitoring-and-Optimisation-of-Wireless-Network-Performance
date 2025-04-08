@@ -11,7 +11,7 @@ import (
 )
 
 func GetRaspberries(w http.ResponseWriter, r *http.Request) {
-	rows, err := database.DB.Query("SELECT * FROM products")
+	rows, err := database.DB.Query("SELECT * FROM central_monitorament")
 	if err != nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)
