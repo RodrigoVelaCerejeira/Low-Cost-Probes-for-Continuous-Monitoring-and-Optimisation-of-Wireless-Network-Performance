@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginPage from './pages/LoginPage.vue';
 import DashboardPage from './pages/Dashboard.vue';
-import RaspberryPage from './pages/Raspberry.vue';
+import RaspberryPage from './pages/RaspberryPage.vue';
 import InfoPage from './pages/InfoPage.vue';
 
 const routes = [
