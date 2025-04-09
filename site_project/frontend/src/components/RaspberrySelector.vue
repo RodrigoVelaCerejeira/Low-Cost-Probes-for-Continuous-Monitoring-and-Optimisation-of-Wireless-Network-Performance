@@ -16,7 +16,7 @@ const raspberryData = ref(null);
 // Buscar lista de Raspberry Pis
 const fetchRaspberryPis = async () => {
     try {
-        const response = await axios.get('http://localhost:3000/raspberry/devices');
+        const response = await axios.get('http://192.92.147.85:3001/raspberry/devices');
         raspberries.value = response.data;
     } catch (error) {
         console.error('Error fonding Raspberry Pis:', error);
@@ -31,7 +31,7 @@ const fetchRaspberryData = async () => {
             raspberryData.value = response.data;
 
             // Buscar os dados de ping
-            //const pingResponse = await axios.get(`http://localhost:3000/raspberry/${selectedRaspberry.value}/ping`);
+            //const pingResponse = await axios.get(`http://192.92.147.85:3001/raspberry/${selectedRaspberry.value}/ping`);
             //pingData.value = pingResponse.data;
             emit('selected', raspberryData.value);
         } catch (error) {

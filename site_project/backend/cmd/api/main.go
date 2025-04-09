@@ -20,7 +20,7 @@ func main() {
 
     fmt.Println("Starting GO API service...")
 
-    err := http.ListenAndServe("0.0.0.0:3000", r)
+    err := http.ListenAndServe("0.0.0.0:3001", r)
     if err != nil {
         log.Error(err)
     }

@@ -14,7 +14,7 @@ import CurrentTime from '../components/CurrentTime.vue';
     </div>
     <div class="all_rp">
       <iframe
-        src="http://localhost:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
         width="450" height="200" frameborder="0"></iframe>
     </div>
   </div>
