@@ -27,7 +27,7 @@ const fetchRaspberryPis = async () => {
 const fetchRaspberryData = async () => {
     if (selectedRaspberry.value) {
         try {
-            const response = await axios.get(`http://localhost:3000/raspberry/${selectedRaspberry.value}`);
+            const response = await axios.get(`http://192.92.147.85:3001/raspberry/${selectedRaspberry.value}`);
             raspberryData.value = response.data;
 
             // Buscar os dados de ping
@@ -50,7 +50,7 @@ onMounted(fetchRaspberryPis);
         <select v-model="selectedRaspberry" @change="fetchRaspberryData" class="border p-2 rounded">
             <option value="" disabled>Select a Raspberry Pi</option>
             <option v-for="rpi in raspberries" :key="rpi.id" :value="rpi.id">
-                {{ rpi.name }}
+                {{ rpi.mac }}
             </option>
         </select>
 <!--
