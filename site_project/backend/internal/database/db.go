@@ -9,10 +9,11 @@ import (
 
 var DB *sql.DB
 
-type Product struct {
+type Raspberry struct {
 	Id    int     `json:"id"`
-	Name  string  `json:"name"`
-	Price float32 `json:"price"`
+	Mac_Address  string  `json:"mac"`
+	Local_Ip string `json:"local_ip"`
+	Global_Ip string `json:"global_ip"`
 }
 
 func Init(dsn string) {
