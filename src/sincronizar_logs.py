@@ -36,7 +36,7 @@ def inserir_log(raspberrypi_id, mensagem):
                 conn_central.commit()
                 print(f"Log inserido com sucesso: {mensagem}")
             else:
-                print(f"⚠️ Raspberry Pi com id {raspberrypi_id} não encontrado na tabela central.")
+                print(f"Raspberry Pi com id {raspberrypi_id} não encontrado na tabela central.")
 
         except mariadb.Error as e:
             print(f"Erro ao inserir log: {e}")
