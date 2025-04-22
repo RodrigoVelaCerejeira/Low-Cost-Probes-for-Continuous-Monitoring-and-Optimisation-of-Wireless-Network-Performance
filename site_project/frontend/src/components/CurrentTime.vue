@@ -1,4 +1,3 @@
-<!-- src/components/CurrentTime.vue -->
 <script setup>
 import { ref, onMounted } from 'vue';
 
@@ -12,34 +11,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="time-container">
-    <p class="welcome-message">Welcome</p>
-    <div class="time">
+  <div class="text-center">
+    <p class="text-2xl font-bold text-gray-800 mb-1 font-roboto">Welcome</p>
+    <div class="text-3xl text-white font-roboto bg-blue-600 bg-opacity-80 px-2 py-1 rounded-full inline-block">
       <p>{{ currentTime }}</p>
     </div>
   </div>
 </template>
-
-<style scoped>
-.time-container {
-  text-align: center;
-}
-
-.welcome-message {
-  font-size: 25px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-  font-family: 'Roboto', sans-serif;
-}
-
-.time {
-  font-size: 30px;
-  color: #FFFFFF;
-  font-family: 'Roboto', sans-serif;
-  background: rgba(36, 60, 230, 0.8);
-  padding: 3px;
-  border-radius: 25px;
-  display: inline-block;
-}
-</style>
