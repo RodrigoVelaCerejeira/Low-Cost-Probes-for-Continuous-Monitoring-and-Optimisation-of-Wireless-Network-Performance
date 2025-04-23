@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%     File: Thesis_Appendix_B.tex                                      %
+%     Tex Master: Thesis.tex                                           %
+%                                                                      %
+%     Author: Andre C. Marta                                           %
+%     Last modified :  4 Mar 2024                                      %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Technical Datasheets}
+\label{chapter:appendixDatasheets}
+
+It is possible to add PDF files to the document, such as technical sheets of some equipment used in the work.
+
+% ----------------------------------------------------------------------
+\section{Some Datasheet}
+\label{section:datasheet}
+
+See more options to include PDF files in \url{https://www.ctan.org/pkg/pdfpages}
+
+% options:
+%   pages : select pages to insert (listed and/or range)
+%   nup : number of pages in the horizontal and vertical directions
+%   landscape : rotate page
+\includepdf[pages={1-4},nup=2x2,landscape=false]{Figures/datasheet_lidar.pdf}
+

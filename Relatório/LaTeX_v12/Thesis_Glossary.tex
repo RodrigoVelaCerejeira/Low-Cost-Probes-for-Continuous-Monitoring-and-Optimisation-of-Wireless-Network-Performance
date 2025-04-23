@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%     File: Thesis_Glossary.tex                                        %
+%     Tex Master: Thesis.tex                                           %
+%                                                                      %
+%     Author: Andre C. Marta                                           %
+%     Last modified : 27 Feb 2024                                      %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% The definitions can be placed anywhere in the document body
+% and their order is sorted by <key> automatically when
+% calling makeindex in the makefile
+%
+% ----------------------------------------------------------------------
+% To create a glossary entry, use the following syntax:
+%
+% \newglossaryentry{<label>}{name={<key>}, description={<value>}}
+%
+% where the parameters are:
+% <label> is the label of the entry,
+% <key> is the acronym to be defined by the glossary entry (in lowercase, preferably)
+% <value> is the actual definition of the current term
+%
+% To produce the desired term in the document, that will be replaced by
+% the user-defined in the output, use the following syntax:
+%
+% \gls{<label>}
+%
+% ----------------------------------------------------------------------
+% To create a acronym entry, use the following syntax:
+%
+% \newacronym{⟨label⟩}{⟨abbrv⟩}{⟨full⟩}
+%
+% where the parameters are:
+% <label> is the label of the entry,
+% <abbrv> is the acronym,
+% <full> is the definition of the acronym
+%
+% To produce the desired term in the document, that will be replaced by
+% the user-defined in the output, use one of the following syntaxes:
+%
+% \acrlong{<label>}
+% \acrshort{<label>}
+% \acrfull{<label>}
+%
+% ----------------------------------------------------------------------
+% By default, only those entries defined in the main document using the
+% commands above will be displayed in the glossary (list of acronyms),
+% unless the command \glsaddall is used,
+% ----------------------------------------------------------------------
+
+% The order of the definitions below is irrelevant
+% since the glossary is automatically ordered alphabetically
+
+\newacronym{mdo}{MDO}{Multidisciplinary Design Optimization}
+\newacronym{xdsm}{XDSM}{eXtended Design Structure Matrix}
+\newacronym{csm}{CSM}{Computational Structural Mechanics}
+\newacronym{cfd}{CFD}{Computational Fluid Dynamics}
+%\newacronym{⟨label⟩}{⟨abbrv⟩}{⟨full⟩}
+%\newacronym{⟨label⟩}{⟨abbrv⟩}{⟨full⟩}
+%\newacronym{⟨label⟩}{⟨abbrv⟩}{⟨full⟩}
+
+% ----------------------------------------------------------------------
+% displays all entries (even those unused with commands \acrlong/short/full)
+\glsaddall
+
+% ----------------------------------------------------------------------
+% vertical aligment of acronyms' long names
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+\setlength\glsdescwidth{1.0\hsize}

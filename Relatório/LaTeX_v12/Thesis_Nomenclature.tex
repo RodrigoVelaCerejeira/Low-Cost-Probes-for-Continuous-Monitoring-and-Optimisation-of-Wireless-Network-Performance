@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%     File: Thesis_Nomenclature.tex                                    %
+%     Tex Master: Thesis.tex                                           %
+%                                                                      %
+%     Author: Andre C. Marta                                           %
+%     Last modified : 27 Feb 2024                                      %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% The definitions can be placed anywhere in the document body
+% and their order is sorted by <symbol> automatically when
+% calling makeindex in the makefile
+%
+% The \glossary command has the following syntax:
+%
+% \glossary{entry}
+%
+% The \nomenclature command has the following syntax:
+%
+% \nomenclature[<prefix>]{<symbol>}{<description>}
+%
+% where <prefix> is used for fine tuning the sort order,
+% <symbol> is the symbol to be described, and <description> is
+% the actual description.
+% The first letter in <prefix> indicates the group, while the next
+% (if included) help sorting if the <symbol> is not a plain character
+%
+% ----------------------------------------------------------------------
+% Roman symbols [r]
+\nomenclature[ru]{$\bf u$}{Velocity vector}
+\nomenclature[ru]{$u,v,w$}{Velocity Cartesian components}
+\nomenclature[rp]{$p$}{Pressure}
+\nomenclature[rC]{$C_D$}{Coefficient of drag}
+\nomenclature[rC]{$C_L$}{Coefficient of lift}
+\nomenclature[rC]{$C_M$}{Coefficient of moment}
+
+% ----------------------------------------------------------------------
+% Greek symbols [g]
+\nomenclature[g]{$\rho$}{Density}
+\nomenclature[g]{$\alpha$}{Angle of attack}
+\nomenclature[g]{$\beta$}{Angle of side-slip}
+\nomenclature[g]{$\mu$}{Molecular viscosity coefficient}
+\nomenclature[g]{$\kappa$}{Thermal conductivity coefficient}
+
+% ----------------------------------------------------------------------
+% Subscripts [s]
+\nomenclature[sx]{$x,y,z$}{Cartesian components}
+\nomenclature[si]{$i,j,k$}{Computational indexes}
+\nomenclature[s]{$\infty$}{Free-stream condition}
+\nomenclature[sr]{ref}{Reference condition}
+\nomenclature[sn]{$n$}{Normal component}
+
+% ----------------------------------------------------------------------
+% Supercripts [t]
+\nomenclature[t]{T}{Transpose}
+\nomenclature[t]{*}{Adjoint}

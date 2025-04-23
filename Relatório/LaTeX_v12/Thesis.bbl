@@ -1,0 +1,196 @@
+\begin{thebibliography}{23}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Marta and Suleman(2021)]{Marta:AeroBest2021}
+A.~C. Marta and A.~Suleman, editors.
+\newblock \emph{Proceedings of the AeroBest 2021 - International Conference on Multidisciplinary Design Optimization of Aerospace Systems}.
+\newblock ECCOMAS Thematic Conference. IDMEC, Lisboa, Portugal, 1st edition, July 2021.
+\newblock ISBN:978-989-99424-8-6.
+
+\bibitem[Morgado et~al.(2022)Morgado, Marta, and Gil]{Morgado:2022:SAMO}
+F.~Morgado, A.~C. Marta, and P.~Gil.
+\newblock Coupled preliminary design and trajectory optimization of rockets using a multidisciplinary approach.
+\newblock \emph{Structural and Multidisciplinary Optimization}, 65\penalty0 (192):\penalty0 1--31, Feb. 2022.
+\newblock ISSN 1615-147X.
+\newblock \doi{10.1007/s00158-022-03285-y}.
+\newblock URL \url{https://link.springer.com/article/10.1007/s00158-022-03285-y}.
+\newblock doi:10.1007/s00158-022-03285-y.
+
+\bibitem[Jameson et~al.(1998)Jameson, Pierce, and Martinelli]{jameson:adjointns}
+A.~Jameson, N.~A. Pierce, and L.~Martinelli.
+\newblock Optimum aerodynamic design using the {Navier}--{S}tokes equations.
+\newblock In \emph{Theoretical and Computational Fluid Dynamics}, volume~10, pages 213--237. Springer-Verlag GmbH, Jan. 1998.
+
+\bibitem[Alves et~al.(2022)Alves, Marta, and F\'elix]{Alves:ICUAS:2022}
+B.~M. Alves, A.~C. Marta, and L.~F. F\'elix.
+\newblock Multidisciplinary optimisation of an {eVTOL UAV} with a hydrogen fuel cell.
+\newblock In \emph{Proceedings of the ICUAS 2022 - International Conference on Unmanned Aircraft Systems}, Dubrovnik, Croatia, June 2022.
+
+\bibitem[Pacheco(2022)]{Pacheco:MSc}
+J.~Pacheco.
+\newblock Wind tunnel testing of a complete formula student vehicle.
+\newblock {MSc} {T}hesis in {M}echanical {E}ngineering, Instituto Superior T\'ecnico, Lisboa, Portugal, June 2022.
+
+\bibitem[Rodrigues(2019)]{Rodrigues:PhD}
+S.~Rodrigues.
+\newblock \emph{Aero-thermal analysis and design of turbomachinery blades using multi-stage adjoint methods}.
+\newblock {PhD} {T}hesis in {A}erospace {E}ngineering, Instituto Superior T\'ecnico, Lisboa, Portugal, April 2019.
+
+\bibitem[Campos and Marta(2021)]{Campos:2021:QJMAM}
+L.~M. B.~C. Campos and A.~C. Marta.
+\newblock On the vibrations of pyramidal beams with rectangular cross-section and application to unswept wings.
+\newblock \emph{Quarterly Journal Of Mechanics And Applied Mathematics}, 74\penalty0 (1):\penalty0 1--31, Feb. 2021.
+\newblock ISSN 0033-5614.
+\newblock \doi{10.1093/qjmam/hbaa017}.
+\newblock URL \url{https://academic.oup.com/qjmam/article-abstract/74/1/1/6126085}.
+\newblock doi:10.1093/qjmam/hbaa017.
+
+\bibitem[Alexandre et~al.(2020)Alexandre, Marino, Marta, Graziani, and Piva]{Alexandre:2020:PLOS}
+D.~Alexandre, L.~Marino, A.~C. Marta, G.~Graziani, and R.~Piva.
+\newblock On the feasibility of {R}ayleigh cycles for dynamic soaring trajectories.
+\newblock \emph{PLoS One}, 15\penalty0 (3):\penalty0 e0229746, Mar. 2020.
+\newblock ISSN 1932-6203.
+\newblock \doi{10.1371/journal.pone.0229746}.
+\newblock URL \url{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0229746}.
+\newblock doi:10.1371/journal.pone.0229746.
+
+\bibitem[Pacheco et~al.(2024)Pacheco, Marta, and Eça]{Pacheco:2024:JAUTO}
+J.~Pacheco, A.~C. Marta, and L.~Eça.
+\newblock Wind tunnel testing of a formula student vehicle for checking cfd simulation trends.
+\newblock \emph{Proceedings of the Institution of Mechanical Engineers, Part D: Journal of Automobile Engineering}, 0\penalty0 (0):\penalty0 1--17, Jan. 2024.
+\newblock ISSN 0954-4070.
+\newblock \doi{10.1177/09544070231203076}.
+\newblock URL \url{https://journals.sagepub.com/doi/10.1177/09544070231203076}.
+\newblock doi:10.1177/09544070231203076.
+
+\bibitem[Portugal and Marta(2024)]{Portugal:2024:MODELLING}
+M.~Portugal and A.~C. Marta.
+\newblock Optimal multi-sensor obstacle detection system for small fixed-wing uavs.
+\newblock \emph{Modelling}, 5\penalty0 (1):\penalty0 16--36, Jan. 2024.
+\newblock ISSN 2673-3951.
+\newblock \doi{10.3390/modelling5010002}.
+\newblock URL \url{https://www.mdpi.com/2673-3951/5/1/2}.
+\newblock doi:10.3390/modelling5010002.
+
+\bibitem[Matos and Marta(2022)]{Matos:2022:AEROSPACE}
+N.~M.~B. Matos and A.~C. Marta.
+\newblock Concurrent trajectory optimization and aircraft design for the air cargo challenge competition.
+\newblock \emph{Aerospace}, 9\penalty0 (7):\penalty0 378, July 2022.
+\newblock ISSN 2226-4310.
+\newblock \doi{10.3390/aerospace9070378}.
+\newblock URL \url{https://www.mdpi.com/2226-4310/9/7/378}.
+\newblock doi:10.3390/aerospace9070378.
+
+\bibitem[Rodrigues and Marta(2020)]{Rodrigues:2020:SAMO}
+S.~S. Rodrigues and A.~C. Marta.
+\newblock Adjoint-based shape sensitivity of multi-row turbomachinery.
+\newblock \emph{Structural and Multidisciplinary Optimization}, 61\penalty0 (2):\penalty0 837--853, Feb. 2020.
+\newblock ISSN 1615-147X.
+\newblock \doi{10.1007/s00158-019-02386-5}.
+\newblock URL \url{https://link.springer.com/article/10.1007%2Fs00158-019-02386-5}.
+\newblock doi:10.1007/s00158-019-02386-5.
+
+\bibitem[Rodrigues and Marta(2019)]{Rodrigues:2019:RENE}
+S.~S. Rodrigues and A.~C. Marta.
+\newblock On addressing wind turbine noise with after-market shape blade add-ons.
+\newblock \emph{Renewable Energy}, 140:\penalty0 602--614, Sept. 2019.
+\newblock ISSN 0960-1481.
+\newblock \doi{10.1016/j.renene.2019.03.056}.
+\newblock URL \url{https://www.sciencedirect.com/science/article/pii/S0960148119303611}.
+\newblock doi:10.1016/j.renene.2019.03.056.
+
+\bibitem[Campos and Marta(2018)]{Campos:2018:JSV}
+L.~M. B.~C. Campos and A.~C. Marta.
+\newblock On the extension of cylindrical acoustic waves to acoustic-vortical-entropy waves in a flow with rigid body swirl.
+\newblock \emph{Journal of Sound and Vibration}, 437:\penalty0 389--409, Dec. 2018.
+\newblock ISSN 0022-460X.
+\newblock \doi{10.1016/j.jsv.2018.09.017}.
+\newblock URL \url{https://www.sciencedirect.com/science/article/pii/S0022460X18305960}.
+\newblock doi:10.1016/j.jsv.2018.09.017.
+
+\bibitem[Rodrigues and Marta(2018)]{Rodrigues:2018:CAF}
+S.~S. Rodrigues and A.~C. Marta.
+\newblock Adjoint formulation of a steady multistage turbomachinery interface using automatic differentiation.
+\newblock \emph{Computer and Fluids}, 176:\penalty0 182--192, Nov. 2018.
+\newblock ISSN 0045-7930.
+\newblock \doi{10.1016/j.compfluid.2018.09.015}.
+\newblock URL \url{https://www.sciencedirect.com/science/article/pii/S0045793018306625}.
+\newblock doi:10.1016/j.compfluid.2018.09.015.
+
+\bibitem[Campos and Marta(2015)]{Campos:2015:GAFD}
+L.~M. B.~C. Campos and A.~C. Marta.
+\newblock On the combined effect of atmospheric stratification and non-uniform magnetic field on magneto-sonic-gravity waves.
+\newblock \emph{Geophysical \& Astrophysical Fluid Dynamics}, 109\penalty0 (2):\penalty0 168--198, Apr. 2015.
+\newblock ISSN 1029-0419.
+\newblock \doi{10.1080/03091929.2015.1032959}.
+\newblock URL \url{http://www.tandfonline.com/doi/full/10.1080/03091929.2015.1032959}.
+\newblock doi:10.1080/03091929.2015.1032959.
+
+\bibitem[Marta and Shankaran(2014)]{Marta:2014:JPP}
+A.~C. Marta and S.~Shankaran.
+\newblock Assessing turbomachinery performance sensitivity to boundary conditions using control theory.
+\newblock \emph{AIAA Journal of Propulsion and Power}, 30\penalty0 (5):\penalty0 1281--1294, Sept. 2014.
+\newblock ISSN 0748-4658.
+\newblock \doi{10.2514/1.B35087}.
+\newblock URL \url{http://arc.aiaa.org/doi/abs/10.2514/1.B35087}.
+\newblock doi:10.2514/1.B35087.
+
+\bibitem[Rodrigues and Marta(2014)]{Rodrigues:2014:SMO}
+S.~S. Rodrigues and A.~C. Marta.
+\newblock On addressing noise constraints in the design of wind turbine blades.
+\newblock \emph{Structural and Multidisciplinary Optimization}, 50\penalty0 (3):\penalty0 489--503, Sept. 2014.
+\newblock ISSN 1615-1488.
+\newblock \doi{10.1007/s00158-014-1072-4}.
+\newblock URL \url{http://link.springer.com/article/10.1007\%2Fs00158-014-1072-4}.
+\newblock doi:10.1007/s00158-014-1072-4.
+
+\bibitem[Campos and Marta(2014)]{Campos:2014:IJMS}
+L.~M. B.~C. Campos and A.~C. Marta.
+\newblock On the prevention or facilitation of buckling of beams.
+\newblock \emph{International Journal of Mechanical Sciences}, 79:\penalty0 95--104, Feb. 2014.
+\newblock ISSN 0020-7403.
+\newblock \doi{10.1016/j.ijmecsci.2013.12.003}.
+\newblock URL \url{http://www.sciencedirect.com/science/article/pii/S002074031300338X}.
+\newblock doi:10.1016/j.ijmecsci.2013.12.003.
+
+\bibitem[Marta et~al.(2013)Marta, Shankaran, Venugopal, Barr, and Wang]{Marta:2013:AIAAJ}
+A.~C. Marta, S.~Shankaran, P.~Venugopal, B.~Barr, and Q.~Wang.
+\newblock Interpretation of adjoint solutions for turbomachinery flows.
+\newblock \emph{AIAA Journal}, 51\penalty0 (7):\penalty0 1733--1744, July 2013.
+\newblock ISSN 0001-1452.
+\newblock \doi{10.2514/1.J052177}.
+\newblock URL \url{http://arc.aiaa.org/doi/pdf/10.2514/1.J052177}.
+\newblock doi:10.2514/1.J052177.
+
+\bibitem[Marta and Shankaran(2013)]{Marta:2013:CAF}
+A.~C. Marta and S.~Shankaran.
+\newblock On the handling of turbulence equations in {RANS} adjoint solvers.
+\newblock \emph{Computers \& {F}luids}, 74:\penalty0 102--113, Mar. 2013.
+\newblock ISSN 0045-7930.
+\newblock \doi{10.1016/j.compfluid.2013.01.012}.
+\newblock URL \url{http://www.sciencedirect.com/science/article/pii/S0045793013000303}.
+\newblock doi:10.1016/j.compfluid.2013.01.012.
+
+\bibitem[Marta and Alonso(2010)]{Marta:2010:CAF}
+A.~C. Marta and J.~J. Alonso.
+\newblock Toward optimally seeded airflow on hypersonic vehicles using control theory.
+\newblock \emph{Computers \& {F}luids}, 39\penalty0 (9):\penalty0 1562--1574, Oct. 2010.
+\newblock ISSN 0045-7930.
+\newblock \doi{10.1016/j.compfluid.2010.05.009}.
+\newblock URL \url{http://www.sciencedirect.com/science/article/pii/S0045793010001155}.
+\newblock doi:10.1016/j.compfluid.2010.05.009.
+
+\bibitem[Marta et~al.(2007)Marta, Mader, Martins, van~der Weide, and Alonso]{Marta:2007:IJCFD}
+A.~C. Marta, C.~A. Mader, J.~R. R.~A. Martins, E.~van~der Weide, and J.~J. Alonso.
+\newblock A methodology for the development of discrete adjoint solvers using automatic differentiation tools.
+\newblock \emph{International {J}ournal of {C}omputational {F}luid {D}ynamics}, 21\penalty0 (9--10):\penalty0 307--327, Oct. 2007.
+\newblock ISSN 1061-8562.
+\newblock \doi{10.1080/10618560701678647}.
+\newblock URL \url{http://www.tandfonline.com/doi/pdf/10.1080/10618560701678647}.
+\newblock doi:10.1080/10618560701678647.
+
+\end{thebibliography}

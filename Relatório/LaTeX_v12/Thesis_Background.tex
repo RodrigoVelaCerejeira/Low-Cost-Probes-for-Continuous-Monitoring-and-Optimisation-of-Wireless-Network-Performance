@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%     File: Thesis_Background.tex                                      %
+%     Tex Master: Thesis.tex                                           %
+%                                                                      %
+%     Author: Andre C. Marta                                           %
+%     Last modified :  4 Mar 2024                                      %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Background}
+\label{chapter:background}
+
+Insert your chapter material here.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Theoretical Overview}
+\label{section:theory}
+
+Some overview of the underlying theory about the topic...
+
+Remember to define an acronym the first time it is used.
+
+The full acronym can be \acrfull{mdo}, that includes both its long definition~\acrlong{mdo} and short definition~\acrshort{mdo}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Theoretical Model 1}
+\label{section:theory1}
+
+The research should be supported with a comprehensive list of references.
+These should appear whenever necessary, in the limit, from the first to the last chapter.
+
+A reference can be cited in any of the following ways:
+%
+\begin{itemize}
+  \item Citation mode \#1 - \quad \cite{Marta:AeroBest2021}
+  \item Citation mode \#2 - \quad \citet{Marta:AeroBest2021}
+  \item Citation mode \#3 - \quad \citep{Marta:AeroBest2021}
+  \item Citation mode \#4 - \quad \citet*{Marta:AeroBest2021}
+  \item Citation mode \#5 - \quad \citep*{Marta:AeroBest2021}
+  \item Citation mode \#6 - \quad \citealt{Marta:AeroBest2021}
+  \item Citation mode \#7 - \quad \citealp{Marta:AeroBest2021}
+  \item Citation mode \#8 - \quad \citeauthor{Marta:AeroBest2021}
+  \item Citation mode \#9 - \quad \citeyear{Marta:AeroBest2021}
+  \item Citation mode \#10 - \quad \citeyearpar{Marta:AeroBest2021}
+\end{itemize}
+
+The references may include books~\cite{Marta:AeroBest2021}, articles in journals~\cite{Morgado:2022:SAMO}, part of a collection of books~\cite{jameson:adjointns}, articles in conferences~\cite{Alves:ICUAS:2022}, master theses~\cite{Pacheco:MSc} and PhD theses~\cite{Rodrigues:PhD}.
+
+Several citations can be made simultaneously as \cite{Campos:2021:QJMAM,Alexandre:2020:PLOS}.
+
+This is often the default bibliography style adopted (numbers following the citation order), according to the options:
+
+{\tt \textbackslash usepackage\{natbib\}} in file {\tt Thesis\_Preamble.tex},\\
+{\tt \textbackslash bibliographystyle\{abbrvnat\}} in file {\tt Thesis.tex}.\\
+
+Notice however that this style can be changed from numerical citation order to authors' last name with the options:
+
+{\tt \textbackslash usepackage[numbers]\{natbib\}} in file {\tt Thesis\_Preamble.tex},\\
+{\tt \textbackslash bibliographystyle\{abbrvunsrtnat\}} in file {\tt Thesis.tex}. \\
+
+Multiple citations are compressed when using the {\tt sort\&compress} option when loading the {\tt natbib} package as {\tt \textbackslash usepackage[numbers,sort\&compress]\{natbib\}} in file {\tt Thesis\_Preamble.tex}, resulting in citations like \cite{Pacheco:2024:JAUTO,Portugal:2024:MODELLING,Matos:2022:AEROSPACE,Rodrigues:2020:SAMO,Rodrigues:2019:RENE,Campos:2018:JSV,Rodrigues:2018:CAF,Campos:2015:GAFD,Marta:2014:JPP,Rodrigues:2014:SMO,Campos:2014:IJMS,Marta:2013:AIAAJ,Marta:2013:CAF,Marta:2010:CAF,Marta:2007:IJCFD}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Theoretical Model 2}
+\label{section:theory2}
+
+Other models.
+
