@@ -179,4 +179,4 @@ while True:
                       rtt_min, rtt_avg, rtt_max, rtt_mdev)
         print("Acabou de inserir na tabela local")
 
-        time.sleep(60)
+        time.sleep(300)
