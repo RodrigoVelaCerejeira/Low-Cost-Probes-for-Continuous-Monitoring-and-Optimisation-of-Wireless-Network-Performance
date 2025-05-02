@@ -180,3 +180,16 @@ while True:
         print("Acabou de inserir na tabela local")
 
         time.sleep(300)
+
+
+# Após a coleta de dados, chame o script de sincronização
+def sincronizar_com_central():
+    """Função para chamar o script de sincronização para a base de dados central"""
+    try:
+        subprocess.run(['python3', '/home/cerejeira/PIC/src/sincronizar_dados.py'], check=True)
+        print("Sincronização com a base de dados central concluída com sucesso.")
+    except subprocess.CalledProcessError as e:
+        print(f"Erro ao sincronizar com a base de dados central: {e}")
+
+# Chamar a função de sincronização após a coleta de dados
+sincronizar_com_central()
