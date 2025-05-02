@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vite",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
@@ -19,6 +20,7 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "vite": "^6.3.4",
     "vue-cli-plugin-tailwind": "~3.0.0"
   }
 }
