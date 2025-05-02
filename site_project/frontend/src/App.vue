@@ -8,19 +8,28 @@
       <div class="flex gap-6">
         <router-link
           to="/dashboard"
-          class="px-4 py-2 rounded-full transition hover:bg-green-500 hover:text-white"
+          :class="[
+            'px-4 py-2 rounded-full transition',
+            route.path === '/dashboard' ? 'bg-green-500 text-white' : 'hover:bg-green-500 hover:text-white'
+          ]"
         >
           Dashboard
         </router-link>
         <router-link
           to="/raspberries"
-          class="px-4 py-2 rounded-full transition hover:bg-green-500 hover:text-white"
+          :class="[
+            'px-4 py-2 rounded-full transition',
+            route.path === '/raspberries' ? 'bg-green-500 text-white' : 'hover:bg-green-500 hover:text-white'
+          ]"
         >
           Raspberry
         </router-link>
         <router-link
           to="/info"
-          class="px-4 py-2 rounded-full transition hover:bg-green-500 hover:text-white"
+          :class="[
+            'px-4 py-2 rounded-full transition',
+            route.path === '/info' ? 'bg-green-500 text-white' : 'hover:bg-green-500 hover:text-white'
+          ]"
         >
           Info
         </router-link>
@@ -44,6 +53,6 @@ const route = useRoute();
 const router = useRouter();
 
 const logout = () => {
-  router.push('/'); 
+  router.push('/');
 };
 </script>
