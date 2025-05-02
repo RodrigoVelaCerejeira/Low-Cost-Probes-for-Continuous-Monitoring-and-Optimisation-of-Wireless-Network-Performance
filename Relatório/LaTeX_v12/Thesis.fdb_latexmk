@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex Thesis"] 1745170912.28031 "Thesis.aux" "Thesis.bbl" "Thesis" 1745410859.7389 0
+["bibtex Thesis"] 1745170912.28031 "Thesis.aux" "Thesis.bbl" "Thesis" 1746138746.67819 0
   "./Thesis_Bibliography_DB.bib" 1709562358 15785 97a5a248635520277e0b820a8621dea3 ""
   "./abbrvunsrtnat.bst" 1709562358 24267 a4941d7f62480388d05ebc2186bb1e4c ""
-  "Thesis.aux" 1745410859.13335 13505 1d988974af4be00396b0e59605f6a5fa "pdflatex"
+  "Thesis.aux" 1746138746.3606 13505 1d988974af4be00396b0e59605f6a5fa "pdflatex"
   (generated)
   "Thesis.bbl"
   "Thesis.blg"
   (rewritten before read)
-["pdflatex"] 1745410857.08454 "/home/joao/Secretária/pic/pic-project/Relatório/LaTeX_v12/Thesis.tex" "Thesis.pdf" "Thesis" 1745410859.73927 0
+["pdflatex"] 1746138745.36615 "/home/joao/Secretária/pic/pic-project/Relatório/LaTeX_v12/Thesis.tex" "Thesis.pdf" "Thesis" 1746138746.67838 0
   "/etc/texmf/web2c/texmf.cnf" 1745147683.59907 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/joao/Secretária/pic/pic-project/Relatório/LaTeX_v12/Thesis.tex" 1745170565.03281 12865 287cf087111efc4cca19b448752bf919 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -216,22 +216,22 @@
   "Figures/IST_A_CMYK_POS.pdf" 1709562358 230913 e870ecaf8ab565cf9eff312ea24b73fd ""
   "Figures/datasheet_lidar.pdf" 1709577562 365306 2dc8784985d2ed4ca035b0fb48eb14a8 ""
   "Thesis.acr" 0 -1 0 ""
-  "Thesis.aux" 1745410859.13335 13505 1d988974af4be00396b0e59605f6a5fa "pdflatex"
+  "Thesis.aux" 1746138746.3606 13505 1d988974af4be00396b0e59605f6a5fa "pdflatex"
   "Thesis.bbl" 1745170912.37689 10580 eea07adf432cb9afec35a209bc151327 "bibtex Thesis"
-  "Thesis.lof" 1745410859.13735 897 603c12f3068c3b6e0d1cf217dc21197c "pdflatex"
-  "Thesis.lot" 1745410859.13735 693 8871c3b564a71e8421d1f56a18cb6897 "pdflatex"
+  "Thesis.lof" 1746138746.3626 897 603c12f3068c3b6e0d1cf217dc21197c "pdflatex"
+  "Thesis.lot" 1746138746.3626 693 8871c3b564a71e8421d1f56a18cb6897 "pdflatex"
   "Thesis.nls" 0 -1 0 ""
-  "Thesis.out" 1745410859.13635 4851 5f7e177a3bdea2cc906e8851ac52bc3a "pdflatex"
+  "Thesis.out" 1746138746.3626 4851 5f7e177a3bdea2cc906e8851ac52bc3a "pdflatex"
   "Thesis.tex" 1745170565.03281 12865 287cf087111efc4cca19b448752bf919 ""
-  "Thesis.toc" 1745410859.13735 2615 dafe3d0e1e6c59e2e88c36c14570ba09 "pdflatex"
-  "Thesis_Abstract.tex" 1745149802.96729 922 3a2ff7a30f2278f374b64ba10f6e9a94 ""
+  "Thesis.toc" 1746138746.3626 2615 dafe3d0e1e6c59e2e88c36c14570ba09 "pdflatex"
+  "Thesis_Abstract.tex" 1746138745.14664 1953 0d384fb6671b40cff398292bfefbc156 ""
   "Thesis_Acknowledgements.tex" 1745169655.98866 947 02aebf4729bd0f0c7f69c25036d931a3 ""
   "Thesis_Appendix_A.tex" 1709562358 1263 76fbf32851160d8a29e6dabea1936638 ""
   "Thesis_Appendix_B.tex" 1709578078 1286 36e4a5bb1b6a8fbc821c8eb09e809777 ""
   "Thesis_Background.tex" 1709562358 3753 7f519c81db1ab3c5205b9f7cd4e471e9 ""
   "Thesis_Conclusions.tex" 1709562358 1067 42d535fc440aa10ba89d4ac1e4d6addc ""
   "Thesis_Declaration.tex" 1709562358 764 1556d481a7ef98044f1a00019a4006d9 ""
-  "Thesis_Dedication.tex" 1709562358 763 b66da08d5f5f4fba5560ab8b02eba59a ""
+  "Thesis_Dedication.tex" 1746137039.71772 763 b66da08d5f5f4fba5560ab8b02eba59a ""
   "Thesis_FrontCover.tex" 1745410856.73738 1659 dc956550e61f3446be8f1ab459e55a48 ""
   "Thesis_Glossary.tex" 1709562358 3087 29debd17b4b1567863a7f033b081b2ae ""
   "Thesis_Implementation.tex" 1709562358 1870 6d761aa11be16e862b4ced061b8077ad ""
@@ -239,7 +239,7 @@
   "Thesis_Nomenclature.tex" 1709562358 2466 091b4b254cfbd69ac648de6c29c7bb68 ""
   "Thesis_Preamble.tex" 1745170963.66347 22083 fb52f1047a9c0994ae338c91199a01a4 ""
   "Thesis_Results.tex" 1709562358 11404 fa3a64456512eb669afd30231052ccf5 ""
-  "Thesis_Resumo.tex" 1709562358 967 9b6b766c3790c5c93c93c11185fbd38b ""
+  "Thesis_Resumo.tex" 1746137039.71772 967 9b6b766c3790c5c93c93c11185fbd38b ""
   (generated)
   "Thesis.acn"
   "Thesis.aux"
