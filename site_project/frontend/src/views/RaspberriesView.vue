@@ -20,12 +20,20 @@
     </div>
     <!-- Graphics -->
     <div v-if="selectedRaspberry" class="mt-8 grid grid-cols-2 gap-6">
-    <div class="mt-8 grid grid-cols-2 gap-6">
-      <iframe src="http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=1&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
-      <iframe src="http://localhost:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=4&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
-      <iframe src="http://localhost:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry={selectedRaspberry.id}&panelId=3&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
-      <iframe src="http://localhost:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry={selectedRaspberry.id}&panelId=2&__feature.dashboardSceneSolo" width="450" height="200" frameborder="0"></iframe>
-    </div>
+      <div class="mt-8 grid grid-cols-2 gap-6">
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=1&__feature.dashboardSceneSolo"
+          width="450" height="200" frameborder="0"></iframe>
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=4&__feature.dashboardSceneSolo"
+          width="450" height="200" frameborder="0"></iframe>
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry={selectedRaspberry.id}&panelId=3&__feature.dashboardSceneSolo"
+          width="450" height="200" frameborder="0"></iframe>
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry={selectedRaspberry.id}&panelId=2&__feature.dashboardSceneSolo"
+          width="450" height="200" frameborder="0"></iframe>
+      </div>
 
     </div>
   </div>
