@@ -13,7 +13,7 @@ const raspberryData = ref(null);
 // Buscar lista de Raspberry Pis
 const fetchRaspberryPis = async () => {
   try {
-    const response = await axios.get('http://localhost:3001/raspberry/devices');
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/devices');
     raspberries.value = response.data;
   } catch (error) {
     console.error('Error finding Raspberry Pis:', error);
@@ -24,7 +24,7 @@ const fetchRaspberryPis = async () => {
 const fetchRaspberryData = async () => {
   if (selectedRaspberry.value) {
     try {
-      const response = await axios.get(`http://localhost:3001/raspberry/${selectedRaspberry.value}`);
+      const response = await axios.get(`http://192.92.147.85:3001/raspberry/${selectedRaspberry.value}`);
       raspberryData.value = response.data;
       emit('selected', raspberryData.value);
     } catch (error) {
