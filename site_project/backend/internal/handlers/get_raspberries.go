@@ -11,7 +11,7 @@ import (
 )
 
 func GetRaspberries(w http.ResponseWriter, r *http.Request) {
-	rows, err := database.DB.Query("SELECT id, mac_address, ip_local, ip_externo FROM raspberrypis")
+	rows, err := database.DB.Query("SELECT id, mac_address, ultimo_registro FROM raspberrypis")
 	if err != nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)
@@ -21,7 +21,7 @@ func GetRaspberries(w http.ResponseWriter, r *http.Request) {
 	var raspberries []database.Raspberry
 	for rows.Next() {
 		var p database.Raspberry
-		if err := rows.Scan(&p.Id, &p.Mac_Address, &p.Local_Ip, &p.Global_Ip); err != nil {
+		if err := rows.Scan(&p.Id, &p.Mac_Address, &p.Ultimo_registro); err != nil {
 			continue
 		}
 		raspberries = append(raspberries, p)
@@ -33,5 +33,5 @@ func GetRaspberries(w http.ResponseWriter, r *http.Request) {
 		log.Error(err)
 		api.InternalErrorHandler(w)
 		return
-	   }
+	}
 }
