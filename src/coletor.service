@@ -1,0 +1,14 @@
+[Unit]
+Description=Coletor de dados da rede
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/cerejeira/PIC/src/coletor.py
+Restart=always
+User=cerejeira
+Group=cerejeira
+WorkingDirectory=/home/cerejeira/PIC/src
+
+[Install]
+WantedBy=multi-user.target
