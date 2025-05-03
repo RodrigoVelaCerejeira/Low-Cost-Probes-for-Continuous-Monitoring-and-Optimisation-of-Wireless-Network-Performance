@@ -8,10 +8,6 @@
       <!-- Left side -->
       <div class="flex flex-col gap-8 w-1/2">
         <!-- Welcome Box -->
-        <div
-          class="w-full md:w-80 p-6 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 bg-white">
-          <CurrentTime />
-        </div>
 
         <!-- Info -->
         <div
@@ -44,7 +40,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import CurrentTime from '../components/CurrentTime.vue';
-</script>
