@@ -15,14 +15,14 @@ func GetProductById(w http.ResponseWriter, r *http.Request) {
 
 	row := database.DB.QueryRow("SELECT id, mac_address, Ultimo_registro FROM raspberrypis WHERE id = ?", id)
 
-	var product database.Raspberry
-	if err := row.Scan(&product.Id, &product.Mac_Address, &product.Ultimo_registro); err != nil {
+	var raspberry database.Raspberry
+	if err := row.Scan(&raspberry.Id, &raspberry.Mac_Address, &raspberry.Ultimo_registro); err != nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)
 	}
 
 	w.Header().Set("Content-type", "application/json")
-	err := json.NewEncoder(w).Encode(product)
+	err := json.NewEncoder(w).Encode(raspberry)
 	if err != nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)

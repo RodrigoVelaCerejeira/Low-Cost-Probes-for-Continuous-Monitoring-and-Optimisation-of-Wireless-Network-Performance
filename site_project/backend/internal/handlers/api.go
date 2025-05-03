@@ -22,6 +22,7 @@ func Handler(r *chi.Mux) {
 
 	r.Route("/raspberry", func(router chi.Router) {
 		router.Get("/devices", GetRaspberries)
+		router.Get("/nulls", GetNullsById)
 		router.Get("/{id}", GetProductById)
 	})
 }
