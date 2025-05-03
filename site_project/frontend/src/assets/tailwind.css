@@ -3,3 +3,9 @@
 @tailwind components;
 
 @tailwind utilities;
+
+@layer base{
+  html, body, #app {
+    @apply min-h-screen bg-gradient-to-b from-[#17072b] via-[#2c0e44] to-[#3a0d5b] overscroll-none
+  }
+}

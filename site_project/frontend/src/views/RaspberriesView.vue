@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-b from-[#17072b] via-[#2c0e44] to-[#3a0d5b] flex p-24 items-center justify-around">
+  <div class="min-h-screen  flex p-24 items-center justify-around">
     <div
       class="h-max w-max bg-white rounded-3xl shadow-2xl transition transform duration-500 ease-in-out hover:scale-105 p-8 text-gray-800">
 
