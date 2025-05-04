@@ -12,7 +12,7 @@ function is_online(rpi) {
 }
 
 function has_null(rpi) {
-  return nullIds.value.includes(rpi.id)
+  return nullIds?.value?.includes?.(rpi.id) ?? false
 }
 
 
@@ -20,9 +20,6 @@ onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
   raspberries.value = await fetchRaspberryPis();
 });
-
-console.log(nullIds)
-console.log(raspberries)
 </script>
 <template>
   <h1 class="text-5xl font-roboto py-24 text-white text-center ">Overview of Connected Raspberry Pis</h1>
