@@ -48,10 +48,9 @@
           class="h-max text-left p-8 rounded-2xl bg-white shadow-2xl transition transform duration-500 ease-in-out hover:scale-105">
           <h1 class="text-5xl font-bold text-blue-500 mb-5">Main Goals</h1>
           <ul class="list-disc pl-8 text-2xl space-y-4 marker:text-blue-500">
-            <li>bla bla bla bla bla bla bla bla bla bla bla bla..</li>
-            <li>bla bla.</li>
-            <li>bla bla.</li>
-            <li>loles.</li>
+            <li>Desing and implementation of a database structure;</li>
+            <li>Setup and configuration of Raspberry Pi devices for data collection;</li>
+            <li>Development and configuration of a website for data presentation.</li>
           </ul>
         </div>
 
@@ -72,12 +71,15 @@
     <!-- With this project -->
     <div
       class="h-max max-w-5xl text-left p-8 rounded-2xl bg-white shadow-2xl transition transform duration-500 ease-in-out hover:scale-105">
-      <h1 class="text-5xl font-bold text-purple-500 mb-5">With this project, it is possible...</h1>
+      <h1 class="text-5xl font-bold text-purple-500 mb-5">Graphs and Metrics You Can Explore</h1>
       <ul class="list-disc pl-8 text-2xl space-y-4 marker:text-purple-500">
-        <li>babababboii.</li>
-        <li>babababboii.</li>
-        <li>babababboii.</li>
-        <li>babababboii.</li>
+        <li>Download Speed Over Time;</li>
+        <li>Upload Speed Over Time;</li>
+        <li>Packet Loss;</li>
+        <li>Latency;</li>
+        <li>Jitter;</li>
+        <li>Round-Trip Time (RTT).</li>
+
       </ul>
     </div>
   </div>

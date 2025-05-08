@@ -1,32 +1,3 @@
-<script setup>
-import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis } from '@/services/raspberryService'; '@/services/raspberryService'
-
-const nullIds = ref([])
-const raspberries = ref([]);
-const router = useRouter();
-
-function is_online(rpi) {
-  const time = new Date(rpi.ultimo_registro).getTime()
-  const currTime = new Date().getTime()
-  return (currTime - time) < (5 * 60 * 1000)
-}
-
-function has_null(rpi) {
-  return nullIds?.value?.includes?.(rpi.id) ?? false
-}
-
-function navigateToRaspberry(id) {
-  router.push({ name: 'raspberry-details', params: { id } });
-}
-
-
-onMounted(async () => {
-  nullIds.value = await fetchNullRaspberries();
-  raspberries.value = await fetchRaspberryPis();
-});
-</script>
 <template>
   <h1 class="text-5xl font-roboto py-24 text-white text-center mt-8">Overview of Connected Raspberry Pis</h1>
   <div class="flex flex-col gap-8 px-8 pb-24">
@@ -100,4 +71,32 @@ onMounted(async () => {
   </div>
 </template>
 
+<script setup>
+import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { fetchNullRaspberries, fetchRaspberryPis } from '@/services/raspberryService'; '@/services/raspberryService'
 
+const nullIds = ref([])
+const raspberries = ref([]);
+const router = useRouter();
+
+function is_online(rpi) {
+  const time = new Date(rpi.ultimo_registro).getTime()
+  const currTime = new Date().getTime()
+  return (currTime - time) < (5 * 60 * 1000)
+}
+
+function has_null(rpi) {
+  return nullIds?.value?.includes?.(rpi.id) ?? false
+}
+
+function navigateToRaspberry(id) {
+  router.push({ name: 'raspberry-details', params: { id } });
+}
+
+
+onMounted(async () => {
+  nullIds.value = await fetchNullRaspberries();
+  raspberries.value = await fetchRaspberryPis();
+});
+</script>
