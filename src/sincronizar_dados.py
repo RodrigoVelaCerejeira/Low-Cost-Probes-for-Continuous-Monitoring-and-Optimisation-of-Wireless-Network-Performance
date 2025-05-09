@@ -131,10 +131,10 @@ def sincronizar_dados(mac_address):
             # Selecionar os dados da tabela dados_rede na base de dados local
             cursor_local.execute(
                 "SELECT timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev FROM dados_rede")
-            dados = cursor_local.fetchall()
+            dados_rede = cursor_local.fetchall()
             raspberrypi_id_central = inserir_raspberrypi_central(conn_central, mac_address)
 
-            for dado in dados:
+            for dado in dados_rede:
                 timestamp = dado[0]
                 latencia = dado[1]  # Latência
 
@@ -162,6 +162,22 @@ def sincronizar_dados(mac_address):
                     """, (timestamp, latencia, perda_pacotes, download, upload, raspberrypi_id_central, rtt_min, rtt_avg, rtt_max, rtt_mdev))
 
                     conn_central.commit()
+            cursor_local.execute( "SELECT timestamp, ssid, bssid, rate, sig from aps")
+            dados_aps = cursor_local.fetchall()
+
+            cursor_central.execute("DELETE FROM all_aps WHERE raspberrypi_id = ?", (raspberrypi_id_central,))
+            for dado in dados_aps:
+                timestamp = dado[0]
+                ssid = dado[1]
+                bssid = dado[2]
+                rate = dado[3]
+                sig = dado[4]
+                cursor_central.execute("""
+                    INSERT INTO all_aps (timestamp, raspberrypi_id, ssid, bssid, rate, sig)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """, (timestamp, raspberrypi_id_central, ssid, bssid, rate, sig))
+                conn_central.commit()
+
 
             print("Dados sincronizados com sucesso!")
 

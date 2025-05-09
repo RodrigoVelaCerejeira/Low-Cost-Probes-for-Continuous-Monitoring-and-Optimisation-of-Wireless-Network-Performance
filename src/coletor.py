@@ -1,3 +1,4 @@
+import re
 from logging import error
 import time
 import subprocess
@@ -85,28 +86,55 @@ def medir_ping(destino="8.8.8.8"):
 
 
 
-def medir_velocidade():
-    """Funcao para medir alguns valores a inserir na base de dados, com base no comando speedtest-cli
-
-    Returns:
-        Retorna alguns valores a inserir na base de dados
-    """
+def medir_download():
     try:
         resultado = subprocess.run(
-            ["speedtest-cli", "--simple"], capture_output=True, text=True)
-        download = upload = None
+            ["iperf", "-c", "192.92.147.85", "-f m", "-R"], capture_output=True, text=True)
+        upload = None
         for linha in resultado.stdout.split("\n"):
-            if "Download" in linha:
-                download = float(linha.split()[1])
-            if "Upload" in linha:
-                upload = float(linha.split()[1])
-        return download, upload
+            if "Mbits" in linha:
+                upload = float(linha.split()[6])
+        return upload
     except Exception as e:
-        error(f"Erro ao medir velocidade: {e}")
-        return None, None
+        print(f"Erro ao medir velocidade: {e}")
+        return None
 
+def medir_upload():
+    try:
+        resultado = subprocess.run(
+            ["iperf", "-c", "192.92.147.85", "-f m"], capture_output=True, text=True)
+        upload = None
+        for linha in resultado.stdout.split("\n"):
+            if "Mbits" in linha:
+                upload = float(linha.split()[6])
+        return upload
+    except Exception as e:
+        print(f"Erro ao medir velocidade: {e}")
+        return None
 
+def get_aps():
+    try:
+        resultado = subprocess.run(
+            ["nmcli", "-t", "-f", "SSID,BSSID,RATE,SIGNAL", "device", "wifi", "list"], capture_output=True, text=True
+        )
+        aps = []
+        for linha in resultado.stdout.split("\n"):
+            if "SSID" in linha:
+                continue
+            params = re.split(r"(?<!\\):", linha)
+            if len(params) == 4:
+                params = [param.replace('\\:', ':') for param in params]
+                rate = eval(params[2].split()[0])
+                signal = eval(params[3])
+                params[2] = rate
+                params[3] = signal
+                aps.append(params)
+        return aps
+    except Exception as e:
+        print(f"Erro a descobrir os APs: {e}")
+        return None
 
+get_aps()
 def conectar_db():
     """Funcao para conectar a base de dados local
 
@@ -126,7 +154,7 @@ def conectar_db():
         return None
 
 
-def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev):
+def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev, aps):
     """Funcao para inserir os valores na base de dados
 
     Args:
@@ -153,6 +181,15 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev))
 
+            cursor.execute("DELETE FROM aps")
+
+            for value in aps:
+
+                cursor.execute("""
+                    INSERT INTO aps (ssid, bssid, rate, sig)
+                    VALUES (?, ?, ?, ?)
+                """, (value[0], value[1], value[2], value[3]))
+
             conn.commit()
 
         except mariadb.Error as e:
@@ -162,34 +199,18 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
     else:
         error("Erro ao conectar à base de dados para inserção de dados.")
 
-
-
-
-
 # Executar os dados
 while True:
     if __name__ == "__main__":
         print("A comecar a ler os valores")
         latencia, perda_pacotes, rtt_min, rtt_avg, rtt_max, rtt_mdev = medir_ping()
-        download, upload = medir_velocidade()
+        download, upload = medir_download(), medir_upload()
+        aps = get_aps()
         print("Acabou de ler os valores")
 
         print("A inserir dados na tabela local")
         inserir_dados(latencia, perda_pacotes, download, upload,
-                      rtt_min, rtt_avg, rtt_max, rtt_mdev)
+                      rtt_min, rtt_avg, rtt_max, rtt_mdev, aps)
         print("Acabou de inserir na tabela local")
 
-        time.sleep(300)
-
-
-# Após a coleta de dados, chame o script de sincronização
-def sincronizar_com_central():
-    """Função para chamar o script de sincronização para a base de dados central"""
-    try:
-        subprocess.run(['python3', '/home/cerejeira/PIC/src/sincronizar_dados.py'], check=True)
-        print("Sincronização com a base de dados central concluída com sucesso.")
-    except subprocess.CalledProcessError as e:
-        print(f"Erro ao sincronizar com a base de dados central: {e}")
-
-# Chamar a função de sincronização após a coleta de dados
-sincronizar_com_central()
+        time.sleep(60)

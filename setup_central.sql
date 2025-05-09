@@ -4,6 +4,7 @@ USE central_monitoramento;
 
 DROP TABLE IF EXISTS logs;
 DROP TABLE IF EXISTS dados_rede;
+DROP TABLE IF EXISTS all_aps;
 DROP TABLE IF EXISTS raspberrypis;
 
 CREATE TABLE IF NOT EXISTS raspberrypis (
@@ -33,6 +34,17 @@ CREATE TABLE IF NOT EXISTS dados_rede (
     rtt_max FLOAT,  -- RTT máximo em milissegundos
     rtt_mdev FLOAT,  -- Desvio padrão do RTT
     FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)  -- Relacionamento com a tabela raspberrypis
+);
+
+CREATE TABLE IF NOT EXISTS all_aps (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  timestamp DATETIME,
+  raspberrypi_id INT,
+  ssid VARCHAR(50),
+  bssid VARCHAR(50),
+  rate INT,
+  sig INT,
+  FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)  -- Relacionamento com a tabela raspberrypis
 );
 
 CREATE USER IF NOT EXISTS 'monitor'@'%' IDENTIFIED BY 'senha_segura';
