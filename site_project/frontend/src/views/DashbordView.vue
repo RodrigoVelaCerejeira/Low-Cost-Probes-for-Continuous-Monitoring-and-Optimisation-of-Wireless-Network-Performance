@@ -59,8 +59,9 @@
         class="w-1/2 h-96 rounded-lg shadow-lg"></iframe>
     </div>
     <iframe
-      src="http://192.92.147.85:3000/d-solo/deklapqx0pclcc/latencia?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+      src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1746138776000&to=1746762000000&timezone=browser&panelId=4&__feature.dashboardSceneSolo"
       class="w-1/2 h-96 rounded-lg shadow-lg"></iframe>
+
     <div class="mt-6">
       <iframe
         src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
