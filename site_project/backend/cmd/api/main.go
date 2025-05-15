@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	dsn := "monitor:senha_segura@tcp(192.92.147.85:3306)/central_monitoramento"
+	dsn := "monitor:senha_segura@tcp(localhost:3306)/central_monitoramento"
 	database.Init(dsn)
 	log.SetReportCaller(true)
 
