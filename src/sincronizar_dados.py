@@ -60,8 +60,7 @@ def conectar_central():
     """
     try:
         conn = mariadb.connect(
-            # host="192.92.147.85",  # IP do banco de dados central
-            host="localhost",
+            host="192.92.147.85",  # IP do banco de dados central
             user="monitor",
             password="senha_segura",
             database="central_monitoramento"
