@@ -1,23 +1,33 @@
 <template>
   <h1 class="text-5xl font-roboto py-24 text-white text-center mt-8">Overview of Connected Raspberry Pis</h1>
   <div class="flex flex-col gap-8 px-8 pb-24">
-    <div class="flex gap-8">
       <div
-        class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-2/3 h-full overflow-y-scroll">
+        class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll">
         <h2 class="text-2xl font-semibold mb-4">Raspberry Pi Status</h2>
         <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
           <thead class="bg-gray-100 text-gray-700">
             <tr>
-              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Name</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Select</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">MAC Address</th>
               <th class="px-6 py-3 text-left text-sm font-medium uppercase">Status</th>
               <th class="px-6 py-3 text-left text-sm font-medium uppercase">Last Connection</th>
               <th class="px-6 py-3 text-left text-sm font-medium uppercase">Location</th>
               <th class="px-6 py-3 text-left text-sm font-medium uppercase">Failures (Last 24h)</th>
+              <th class="px-6 py-3 text-left text-sm font-medium uppercase">Last hour</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-300 text-gray-800">
             <tr v-for="rpi in raspberries" :key="rpi.id" class="hover:bg-gray-100 cursor-pointer"
               @click="navigateToRaspberry(rpi.id)">
+              <td class="px-6 py-4">
+                <input 
+                  type="checkbox" 
+                  :value="rpi.id" 
+                  v-model="selectedRaspberries" 
+                  class="form-checkbox h-7 w-7 text-indigo-600" 
+                  @click.stop="limitSelection"
+                  />
+              </td>
               <td class="px-6 py-4">{{ rpi.mac }}</td>
               <td v-if="is_online(rpi)" class="px-6 py-4">
                 <span class="inline-block px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded-full">
@@ -37,17 +47,48 @@
               <td v-else class="px-6 py-4">
                 No
               </td>
+              <td class="px-6 py-4">
+                <span
+                  v-if="!is_online(rpi) || rpi.has_error"
+                  class="inline-block w-4 h-4 bg-red-500 rounded-full"
+                  title="Error"
+                  ></span>
+                <span
+                  v-else
+                  class="inline-block w-4 h-4 bg-green-500 rounded-full"
+                  title="No Error"
+                  ></span>
+              </td>
             </tr>
           </tbody>
         </table>
+
+        <div class ="mt-4 flex justify-end">
+          <button
+            @click="viewSelectedData"
+            :disabled="selectedRaspberries.length === 0"
+            class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+            hover:scale-105
+            disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
+            bg-indigo-600 text-white hover:bg-indigo-700" >
+            View Selected Data
+          </button>
+        </div>
       </div>
 
-      <div class="w-1/3">
+      <div
+        class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll">
+        <h2 class="text-2xl font-semibold mb-4">APs</h2>
+      </div>
+
+
+    <div v-if="graphsVisible" class="mt-6">
+
+    <div class="w-1/3">
         <iframe
           src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
           width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
       </div>
-    </div>
 
     <div class="flex gap-6">
       <iframe
@@ -68,36 +109,86 @@
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
     </div>
 
-
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis } from '@/services/raspberryService'; '@/services/raspberryService'
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour } from '@/services/raspberryService';
+import { toast } from 'vue3-toastify';
 
-const nullIds = ref([])
+const nullIds = ref([]);
 const raspberries = ref([]);
 const router = useRouter();
+const selectedRaspberries = ref([]);
+const graphsVisible = ref(false);
+const previousStatuses = ref({}); 
 
 function is_online(rpi) {
-  const time = new Date(rpi.ultimo_registro).getTime()
-  const currTime = new Date().getTime()
-  return (currTime - time) < (5 * 60 * 1000)
+  const time = new Date(rpi.ultimo_registro).getTime();
+  const currTime = new Date().getTime();
+  return currTime - time < 8 * 60 * 1000; 
 }
 
 function has_null(rpi) {
-  return nullIds?.value?.includes?.(rpi.id) ?? false
+  return nullIds?.value?.includes?.(rpi.id) ?? false;
 }
 
 function navigateToRaspberry(id) {
   router.push({ name: 'raspberry-details', params: { id } });
 }
 
+function viewSelectedData() {
+  graphsVisible.value = selectedRaspberries.value.length > 0;
+}
+
+function limitSelection(event) {
+  if (selectedRaspberries.value.length > 3) {
+    event.preventDefault();
+    alert('You can only select up to 3 Raspberry Pis.');
+  }
+}
+
+function checkStatusChange() {
+  raspberries.value.forEach((rpi) => {
+    const currentStatus = is_online(rpi);
+    const previousStatus = previousStatuses.value[rpi.id]; 
+
+    if (previousStatus === true && currentStatus === false) {
+      toast.error(`Raspberry Pi ${rpi.mac} is now offline!`);
+    }
+
+    previousStatuses.value[rpi.id] = currentStatus;
+  });
+}
+
+async function checkLastHourRecords(raspberryId) {
+  try {
+    const failures = await fetchFailuresLastHour();
+    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    return hasFailures; // true -> exist failures, false -> no failures
+  } catch (error) {
+    console.error(`Error checking last hour records for Raspberry Pi ${raspberryId}:`, error);
+    return false;
+  }
+}
+
 
 onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
-  raspberries.value = await fetchRaspberryPis();
+  const response = await fetchRaspberryPis();
+  raspberries.value = response;
+
+  for (const rpi of raspberries.value) {
+    rpi.has_error = await checkLastHourRecords(rpi.id); 
+  }
+
+  raspberries.value.forEach((rpi) => {
+    previousStatuses.value[rpi.id] = is_online(rpi);
+  });
+
+  setInterval(checkStatusChange, 5000);
 });
 </script>

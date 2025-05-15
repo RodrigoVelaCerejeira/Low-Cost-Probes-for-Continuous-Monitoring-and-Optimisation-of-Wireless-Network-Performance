@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"github.com/go-chi/chi"
-	//"github.com/backend-pic/internal/middleware"
 	chimiddle "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 )
@@ -22,7 +21,9 @@ func Handler(r *chi.Mux) {
 
 	r.Route("/raspberry", func(router chi.Router) {
 		router.Get("/devices", GetRaspberries)
+		router.Get("/aps", GetAPs)
 		router.Get("/nulls", GetNullsById)
 		router.Get("/{id}", GetProductById)
+		router.Get("/lasthour", GetFailuresLastHour)
 	})
 }

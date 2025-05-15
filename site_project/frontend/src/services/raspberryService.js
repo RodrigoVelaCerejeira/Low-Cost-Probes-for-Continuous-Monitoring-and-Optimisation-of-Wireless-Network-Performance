@@ -18,4 +18,14 @@ export const fetchNullRaspberries = async () => {
     console.error('Error finding Raspberry Pis with null values:', error);
     throw error;
   }
+};
+
+export const fetchFailuresLastHour = async () => {
+  try {
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/lasthour');
+    return response.data;
+  } catch (error) {
+    console .error('Error finding Raspberry Pis with failures in the last hour:', error);
+    throw error;
+  }
 }
