@@ -177,9 +177,9 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
                 # Se estiver conectado, coletemos os dados
 
             cursor.execute("""
-                INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev))
+                INSERT INTO dados_rede (ip_local, ip_externo, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (ip_local, ip_externo, latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, rtt_max, rtt_mdev, len(aps)))
 
             cursor.execute("DELETE FROM aps")
 

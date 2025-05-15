@@ -60,7 +60,8 @@ def conectar_central():
     """
     try:
         conn = mariadb.connect(
-            host="192.92.147.85",  # IP do banco de dados central
+            # host="192.92.147.85",  # IP do banco de dados central
+            host="localhost",
             user="monitor",
             password="senha_segura",
             database="central_monitoramento"
@@ -130,7 +131,7 @@ def sincronizar_dados(mac_address):
 
             # Selecionar os dados da tabela dados_rede na base de dados local
             cursor_local.execute(
-                "SELECT timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev FROM dados_rede")
+                "SELECT timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps, id FROM dados_rede WHERE synch = FALSE")
             dados_rede = cursor_local.fetchall()
             raspberrypi_id_central = inserir_raspberrypi_central(conn_central, mac_address)
 
@@ -145,23 +146,24 @@ def sincronizar_dados(mac_address):
                 rtt_avg = dado[6]  # RTT Médio
                 rtt_max = dado[7]  # RTT Máximo
                 rtt_mdev = dado[8]  # RTT Mdev
+                num_aps = dado[9]
+                id = dado[10]
 
-                # Inserir o Raspberry Pi na tabela central, se necessário
-
+                # Inserir os dados na tabela dados_rede no banco de dados central
                 cursor_central.execute("""
-                    SELECT id FROM dados_rede WHERE raspberrypi_id = ? AND timestamp = ?
-                """, (raspberrypi_id_central, timestamp))
+                    INSERT INTO dados_rede (timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, (timestamp, latencia, perda_pacotes, download, upload, raspberrypi_id_central, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps))
 
-                result = cursor_central.fetchone()
+                cursor_local.execute("""
+                    UPDATE dados_rede
+                    SET synch = TRUE
+                    WHERE id = ?
+                """, (id,))
 
-                if not result:
-                    # Inserir os dados na tabela dados_rede no banco de dados central
-                    cursor_central.execute("""
-                        INSERT INTO dados_rede (timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, raspberrypi_id, rtt_min, rtt_avg, rtt_max, rtt_mdev)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    """, (timestamp, latencia, perda_pacotes, download, upload, raspberrypi_id_central, rtt_min, rtt_avg, rtt_max, rtt_mdev))
+                conn_central.commit()
+                conn_local.commit()
 
-                    conn_central.commit()
             cursor_local.execute( "SELECT timestamp, ssid, bssid, rate, sig from aps")
             dados_aps = cursor_local.fetchall()
 

@@ -13,13 +13,13 @@ CREATE TABLE IF NOT EXISTS raspberrypis (
     ultimo_registro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS logs (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    raspberrypi_id INT NOT NULL,  -- ID do Raspberry Pi (referência à tabela raspberrypis)
-    mensagem TEXT,       -- Mensagem do log
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Hora de inserção do log
-    FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id) -- Relacionamento com raspberrypis
-);
+-- CREATE TABLE IF NOT EXISTS logs (
+--     id INT AUTO_INCREMENT PRIMARY KEY,
+--     raspberrypi_id INT NOT NULL,  -- ID do Raspberry Pi (referência à tabela raspberrypis)
+--     mensagem TEXT,       -- Mensagem do log
+--     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Hora de inserção do log
+--     FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id) -- Relacionamento com raspberrypis
+-- );
 
 CREATE TABLE IF NOT EXISTS dados_rede (
     id INT AUTO_INCREMENT PRIMARY KEY,  -- Identificador único
@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS dados_rede (
     rtt_avg FLOAT,  -- RTT médio em milissegundos
     rtt_max FLOAT,  -- RTT máximo em milissegundos
     rtt_mdev FLOAT,  -- Desvio padrão do RTT
+    num_aps INT,
     FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)  -- Relacionamento com a tabela raspberrypis
 );
 
