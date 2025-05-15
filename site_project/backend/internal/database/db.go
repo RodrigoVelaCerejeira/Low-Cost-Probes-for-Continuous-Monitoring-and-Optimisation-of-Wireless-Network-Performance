@@ -24,6 +24,15 @@ type Aps struct {
 	Sig            string `json:"signal"`
 }
 
+type Aps struct {
+	Timestamp      string `json:"timestamp"`
+	Raspberrypi_id string `json:"raspberrypi_id"`
+	Ssid           string `json:"ssid"`
+	Bssid          string `json:"bssid"`
+	Rate           string `json:"rate"`
+	Sig            string `json:"signal"`
+}
+
 func Init(dsn string) {
 	var err error
 	DB, err = sql.Open("mysql", dsn)
