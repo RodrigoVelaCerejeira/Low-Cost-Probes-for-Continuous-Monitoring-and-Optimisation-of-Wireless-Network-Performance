@@ -15,14 +15,6 @@ type Raspberry struct {
 	Ultimo_registro string `json:"ultimo_registro"`
 	HasError        bool   `json:"has_error"`
 }
-type Aps struct {
-	Timestamp      string `json:"timestamp"`
-	Raspberrypi_id string `json:"raspberrypi_id"`
-	Ssid           string `json:"ssid"`
-	Bssid          string `json:"bssid"`
-	Rate           string `json:"rate"`
-	Sig            string `json:"signal"`
-}
 
 type Aps struct {
 	Timestamp      string `json:"timestamp"`
