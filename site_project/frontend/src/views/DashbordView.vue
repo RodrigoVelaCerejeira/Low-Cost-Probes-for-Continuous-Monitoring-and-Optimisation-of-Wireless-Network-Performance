@@ -43,13 +43,10 @@
               No
             </td>
             <td class="px-6 py-4">
-              <span v-if="!is_online(rpi) || (rpi.has_error && is_online(rpi))" class="inline-block w-4 h-4 bg-red-500 rounded-full"
+              <span v-if="!is_online(rpi) || rpi.has_error" class="inline-block w-4 h-4 bg-red-500 rounded-full"
                 title="Error"></span>
               <span v-else class="inline-block w-4 h-4 bg-green-500 rounded-full" title="No Error"></span>
             </td>
-
-
-
           </tr>
         </tbody>
       </table>
@@ -84,6 +81,9 @@
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures in the Last Hour</h2>
+        <div v-if="!is_online(selectedRaspberries[0])" class="px-6 py-4">
+          Raspberry Pi {{ selectedRaspberries[0] }} is offline.
+        </div>
         <ul>
           <li v-for="(failureList, failureType) in selectedFailures" :key="failureType">
             <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}

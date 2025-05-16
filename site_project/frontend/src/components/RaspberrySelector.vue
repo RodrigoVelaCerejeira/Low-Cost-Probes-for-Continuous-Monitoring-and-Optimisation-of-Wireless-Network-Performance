@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import { defineEmits } from 'vue';
 import { fetchRaspberryPis } from '@/services/raspberryService'; '@/services/raspberryService'
 
-// Emitir evento para o componente pai
 const emit = defineEmits(['selected']);
 
 const raspberries = ref([]);

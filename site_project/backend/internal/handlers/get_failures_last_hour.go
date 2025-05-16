@@ -78,7 +78,7 @@ func getFailuresPacketLossLastHour() []int {
 }
 
 func getFailuresRoundTripTimeLastHour() []int {
-	threshold := 100.0 // Mudar
+	threshold := 200.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(rtt_avg) AS average_rtt
@@ -111,7 +111,7 @@ func getFailuresRoundTripTimeLastHour() []int {
 }
 
 func getFailureDownloadSpeedLastHour() []int {
-	threshold := 20.0 // Mudar
+	threshold := 10.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(download_mbps) AS average_download
@@ -142,7 +142,7 @@ func getFailureDownloadSpeedLastHour() []int {
 }
 
 func getFailureLatencyLastHour() []int {
-	threshold := 80.0 // Mudar
+	threshold := 50.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(latencia_ms) AS average_latency
@@ -173,7 +173,7 @@ func getFailureLatencyLastHour() []int {
 }
 
 func getFailureUploadSpeedLastHour() []int {
-	threshold := 20.0 // Mudar
+	threshold := 10.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(upload_mbps) AS average_upload
