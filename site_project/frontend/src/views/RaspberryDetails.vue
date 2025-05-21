@@ -19,6 +19,8 @@
             <li class="text-lg"><strong>Last Record:</strong> {{ selectedRaspberry.ultimo_registro }}</li>
           </ul>
         </div>
+        <button @click="exportExcelById(selectedRaspberry.id)"
+          class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Export Data</button>
       </div>
 
       <div
@@ -70,15 +72,29 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { fetchRaspberryById, fetchAPsById } from '@/services/raspberryService'; '@/services/raspberryService'
+import { fetchRaspberryById, fetchAPsById, fetchRaspberryDataById } from '@/services/raspberryService'; '@/services/raspberryService'
 import RaspberrySelector from '@/components/RaspberrySelector.vue';
 
 const selectedRaspberry = ref(null);
 const raspberryAPs = ref([]);
+const raspberryId = ref(null);
 
 const route = useRoute();
 const router = useRouter();
 const initialId = route.params.id;
+
+const exportExcelById = async (raspberryId) => {
+  if (!raspberryId) {
+    alert('Select a Raspberry Pi first');
+    return;
+  }
+
+  try {
+    await fetchRaspberryDataById(raspberryId);
+  } catch (error) {
+    alert('Error exporting data');
+  }
+};
 
 async function onRaspberrySelected(raspberry) {
   selectedRaspberry.value = await fetchRaspberryById(raspberry.id);

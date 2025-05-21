@@ -59,3 +59,54 @@ export const fetchAPsById = async (id) => {
     throw error;
   }
 };
+
+export const fetchExcelData = async () => {
+  try {
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/excel', {
+      responseType: 'blob', 
+    });
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'dados_rede.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error('Error exporting data:', error);
+    throw error;
+  }
+};
+
+export const fetchRaspberryDataById = async (id) => {
+  try {
+    const response = await axios.get(`http://192.92.147.85:3001/raspberry/excel/${id}` , {
+    responseType: 'blob',
+    });
+
+    const blob = new Blob([response.data], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `dados_rede_${id}.xlsx`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error('Error exporting data:', error);
+    throw error;
+  }
+};

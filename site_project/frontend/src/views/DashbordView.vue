@@ -61,10 +61,17 @@
 
       <div class="mt-4 flex justify-end">
 
+        <button @click="exportData" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+            hover:scale-105
+            disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
+            bg-indigo-600 text-white hover:bg-indigo-700 mr-8">
+          Export Data
+        </button>
+
         <button @click="openPopup(rpi)" :disabled="selectedRaspberries.length != 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
-            bg-indigo-600 text-white hover:bg-indigo-700 mr-4">
+            bg-indigo-600 text-white hover:bg-indigo-700 mr-2">
           View Failures
         </button>
 
@@ -134,7 +141,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour } from '@/services/raspberryService';
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
@@ -168,6 +175,22 @@ function limitSelection(event) {
     alert('You can only select up to 3 Raspberry Pis.');
   }
 }
+
+async function exportData() {
+  await fetchExcelData();
+}
+
+
+async function refreshRaspberryData() {
+  const response = await fetchRaspberryPis();
+  raspberries.value = response;
+
+  for (const rpi of raspberries.value) {
+    rpi.has_error = await checkLastHourRecords(rpi.id);
+    rpi.failures = await getSpecificFailures(rpi.id);
+  }
+}
+
 
 function checkStatusChange() {
   raspberries.value.forEach((rpi) => {
@@ -239,6 +262,9 @@ onMounted(async () => {
     previousStatuses.value[rpi.id] = is_online(rpi);
   });
 
-  setInterval(checkStatusChange, 5000);
+  setInterval(async () => {
+  await refreshRaspberryData(); 
+  checkStatusChange();
+}, 5000);
 });
 </script>

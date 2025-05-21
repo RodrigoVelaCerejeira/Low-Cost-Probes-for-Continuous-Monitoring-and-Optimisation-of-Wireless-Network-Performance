@@ -10,10 +10,11 @@ import (
 var DB *sql.DB
 
 type Raspberry struct {
-	Id              int    `json:"id"`
-	Mac_Address     string `json:"mac"`
-	Ultimo_registro string `json:"ultimo_registro"`
-	HasError        bool   `json:"has_error"`
+	Id              int      `json:"id"`
+	Mac_Address     string   `json:"mac"`
+	Ultimo_registro string   `json:"ultimo_registro"`
+	HasError        bool     `json:"has_error"`
+	Failures        []string `json:"failures"`
 }
 
 type Aps struct {
