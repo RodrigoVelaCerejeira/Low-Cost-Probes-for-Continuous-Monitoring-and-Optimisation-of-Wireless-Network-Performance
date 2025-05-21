@@ -21,7 +21,7 @@
             @click="navigateToRaspberry(rpi.id)">
             <td class="px-6 py-4">
               <input type="checkbox" :value="rpi.id" v-model="selectedRaspberries"
-                class="form-checkbox h-7 w-7 text-indigo-600" @click.stop="limitSelection" />
+                class="form-checkbox h-7 w-7 text-indigo-600" @click.stop="limijtSelection" />
             </td>
             <td class="px-6 py-4">{{ rpi.mac }}</td>
             <td v-if="is_online(rpi)" class="px-6 py-4">
@@ -51,7 +51,12 @@
         </tbody>
       </table>
 
-
+      <div class="p-4 mt-4 bg-blue-50 border border-blue-300 text-blue-800 rounded-md">
+        <p> ℹ️ Select 1 raspberry to view failures.</p>
+      </div>
+      <div class="p-4 mt-1 bg-blue-50 border border-blue-300 text-blue-800 rounded-md">
+        <p> ℹ️ Select at least 1 raspberries and no more than 3.</p>
+      </div>
 
 
       <div class="mt-4 flex justify-end">

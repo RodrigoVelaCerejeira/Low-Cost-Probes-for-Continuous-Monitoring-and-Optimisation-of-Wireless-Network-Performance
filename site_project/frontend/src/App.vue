@@ -11,7 +11,7 @@
       </router-link>
       <router-link to="/raspberries" :class="[
         'px-4 py-2 rounded-full transition',
-        route.path === '/raspberries' ? 'bg-green-500 text-white' : 'hover:bg-green-500 hover:text-white'
+        route.path.startsWith('/raspberries') ? 'bg-green-500 text-white' : 'hover:bg-green-500 hover:text-white'
       ]">
         Raspberry
       </router-link>
