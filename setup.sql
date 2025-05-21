@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS dados_rede (
   ip_local VARCHAR(50),
   ip_externo VARCHAR(50),
   latencia_ms FLOAT,
-  perda_pacotes FLOAT,
+  perda_pacotes INT,
   download_mbps FLOAT,
   upload_mbps FLOAT,
   rtt_min FLOAT,
