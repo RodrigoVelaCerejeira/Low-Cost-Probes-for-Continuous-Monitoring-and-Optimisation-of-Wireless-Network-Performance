@@ -70,7 +70,9 @@ def medir_ping(destino="8.8.8.8"):
                 latencia = float(linha.split("/")[-3].replace(' ms', ''))
             if "packet loss" in linha:
                 partes = linha.split(",")
-                perda_pacotes = float(partes[2].split()[0].replace('%', ''))
+                pacotes_enviados = int(partes[0].split()[0])
+                pctg_perda_pacotes = float(partes[2].split()[0].replace('%', '')) / 100
+                perda_pacotes = int(round(pacotes_enviados * pctg_perda_pacotes))
             if "rtt min/avg/max/mdev" in linha:
                 rtt_values = linha.split("=")[-1].strip().split("/")
                 rtt_min = float(rtt_values[0].replace(' ms', ''))

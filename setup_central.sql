@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS dados_rede (
     raspberrypi_id INT,  -- Identificador do Raspberry Pi
     timestamp DATETIME NOT NULL,  -- Data e hora da coleta
     latencia_ms FLOAT,  -- Latência em milissegundos
-    perda_pacotes FLOAT,  -- Perda de pacotes em porcentagem
+    perda_pacotes INT,  -- Perda de pacotes em porcentagem
     download_mbps FLOAT,  -- Velocidade de download em Mbps
     upload_mbps FLOAT,  -- Velocidade de upload em Mbps
     rtt_min FLOAT,  -- RTT mínimo em milissegundos
