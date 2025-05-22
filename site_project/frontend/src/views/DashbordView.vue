@@ -89,9 +89,6 @@
       </div>
     </div>
 
-    
-
-
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures in the Last Hour</h2>
@@ -171,7 +168,7 @@ function getRaspberryById(id) {
 function is_online(rpi) {
   const time = new Date(rpi.ultimo_registro).getTime();
   const currTime = new Date().getTime();
-  return currTime - time < 8 * 60 * 1000; 
+  return currTime - time < 8 * 60 * 1000;
 }
 
 function has_null(rpi) {
@@ -208,7 +205,7 @@ async function refreshRaspberryData() {
 function checkStatusChange() {
   raspberries.value.forEach((rpi) => {
     const currentStatus = is_online(rpi);
-    const previousStatus = previousStatuses.value[rpi.id]; 
+    const previousStatus = previousStatuses.value[rpi.id];
 
     if (previousStatus === true && currentStatus === false) {
       toast.error(`Raspberry Pi ${rpi.mac} is now offline!`);
@@ -231,16 +228,16 @@ async function checkLastHourRecords(raspberryId) {
 
 async function getSpecificFailures(raspberryId) {
   try {
-    const failures = await fetchFailuresLastHour(); 
-    const specificFailures = {}; 
+    const failures = await fetchFailuresLastHour();
+    const specificFailures = {};
 
     for (const [failureType, failureList] of Object.entries(failures)) {
       if (failureList.includes(raspberryId)) {
-        specificFailures[failureType] = failureList; 
+        specificFailures[failureType] = failureList;
       }
     }
 
-    return specificFailures; 
+    return specificFailures;
   } catch (error) {
     console.error(`Error fetching specific failures for Raspberry Pi ${raspberryId}:`, error);
     return {};
@@ -251,7 +248,7 @@ const isPopupVisible = ref(false);
 const selectedFailures = ref({});
 
 async function openPopup(raspberryId) {
-  selectedFailures.value = await getSpecificFailures(raspberryId); 
+  selectedFailures.value = await getSpecificFailures(raspberryId);
   isPopupVisible.value = true;
 }
 
@@ -292,8 +289,8 @@ onMounted(async () => {
 
 
   for (const rpi of raspberries.value) {
-    rpi.has_error = await checkLastHourRecords(rpi.id); 
-    rpi.failures = await getSpecificFailures(rpi.id); 
+    rpi.has_error = await checkLastHourRecords(rpi.id);
+    rpi.failures = await getSpecificFailures(rpi.id);
   }
 
   raspberries.value.forEach((rpi) => {
@@ -301,8 +298,8 @@ onMounted(async () => {
   });
 
   setInterval(async () => {
-  await refreshRaspberryData(); 
-  checkStatusChange();
-}, 5000);
+    await refreshRaspberryData();
+    checkStatusChange();
+  }, 5000);
 });
 </script>
