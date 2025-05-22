@@ -86,16 +86,55 @@
     </div>
 
     <div
-      class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll">
-      <h2 class="text-2xl font-semibold mb-4">APs</h2>
-    </div>
+  class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll overscroll-none mx-4">
+
+  <h2 class="text-2xl font-semibold mb-4">APs</h2>
+
+  <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
+    <thead class="bg-indigo-50 text-gray-700 sticky top-0">
+      <tr>
+        <th class="px-6 py-3 text-left text-sm font-medium uppercase">SSID</th>
+        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Raspberry Pi ID</th>
+        <th class="px-6 py-3 text-left text-sm font-medium uppercase">BSSID</th>
+        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Rate</th>
+        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Signal</th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-300 text-gray-800">
+      <tr v-for="ap in raspberryAPs" :key="ap.ssid">
+        <td class="px-6 py-4">{{ ap.ssid }}</td>
+        <td class="px-6 py-4">{{ ap.raspberrypi_id }}</td>
+        <td class="px-6 py-4">{{ ap.bssid }}</td>
+        <td class="px-6 py-4">{{ ap.rate }} Mbits/s</td>
+        <td class="px-6 py-4">{{ ap.signal }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
 
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
         <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures in the Last Hour</h2>
-        <div v-if="!is_online(selectedRaspberries[0])" class="px-6 py-4">
+        <div v-if="getRaspberryById(selectedRaspberries[0]) && !is_online(getRaspberryById(selectedRaspberries[0]))"
+          class="px-6 py-4">
           Raspberry Pi {{ selectedRaspberries[0] }} is offline.
         </div>
+
+        <div v-else class="px-6 py-4">
+          <h3 class="text-lg font-medium mb-2">Failures:</h3>
+          <ul v-if="Object.keys(selectedFailures).length > 0">
+            <li v-for="(failureList, failureType) in selectedFailures" :key="failureType">
+              <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}
+            </li>
+          </ul>
+          <p v-else>No failures in the last hour.</p>
+        </div>
+
+
+
         <ul>
           <li v-for="(failureList, failureType) in selectedFailures" :key="failureType">
             <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}
@@ -139,17 +178,27 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
+import { fetchNullRaspberries, fetchRaspberryById, fetchRaspberryPis, fetchAPsById, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
+const allRaspberries = ref([]);
 const raspberries = ref([]);
 const router = useRouter();
+const route = useRoute();
+const initialId = route.params.id;
 const selectedRaspberries = ref([]);
+const raspberryAPs = ref([]);
 const graphsVisible = ref(false);
 const previousStatuses = ref({}); 
+const selectedRaspberry = ref(null);
+
+function getRaspberryById(id) {
+  return allRaspberries.value.find(r => r.id === id);
+}
 
 function is_online(rpi) {
   const time = new Date(rpi.ultimo_registro).getTime();
@@ -246,11 +295,22 @@ function closePopup() {
   isPopupVisible.value = false;
 }
 
+async function onRaspberrySelected(raspberry) {
+  selectedRaspberry.value = await fetchRaspberryById(raspberry.id);
+  raspberryAPs.value = await fetchAPsById(raspberry.id)
+
+  if (raspberry && raspberry.id) {
+    router.push({ name: 'raspberry-details', params: { id: raspberry.id } });
+  }
+}
+
 
 onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
   const response = await fetchRaspberryPis();
+  allRaspberries.value = response;
   raspberries.value = response;
+  onRaspberrySelected({ id: initialId });
 
 
   for (const rpi of raspberries.value) {
