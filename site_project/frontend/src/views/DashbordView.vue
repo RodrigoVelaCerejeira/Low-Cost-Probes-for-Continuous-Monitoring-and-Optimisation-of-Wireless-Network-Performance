@@ -20,7 +20,11 @@
           <tr v-for="rpi in raspberries" :key="rpi.id" class="hover:bg-gray-100 cursor-pointer"
             @click="navigateToRaspberry(rpi.id)">
             <td class="px-6 py-4">
-              <input type="checkbox" :value="rpi.id" v-model="selectedRaspberries"
+              <input 
+              type="checkbox" 
+              :value="rpi.id" 
+              v-model="selectedRaspberries"
+              @change="limitSelection(raspberry)"
                 class="form-checkbox h-7 w-7 text-indigo-600" @click.stop="limijtSelection" />
             </td>
             <td class="px-6 py-4">{{ rpi.mac }}</td>
@@ -75,7 +79,7 @@
           View Failures
         </button>
 
-        <button @click="viewSelectedData" :disabled="selectedRaspberries.length === 0" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+        <button @click="viewSelectedData" :disabled="selectedRaspberries.length === 0 || selectedRaspberries.length > 3" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
             bg-indigo-600 text-white hover:bg-indigo-700">
@@ -85,34 +89,7 @@
       </div>
     </div>
 
-    <div
-  class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll overscroll-none mx-4">
-
-  <h2 class="text-2xl font-semibold mb-4">APs</h2>
-
-  <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
-    <thead class="bg-indigo-50 text-gray-700 sticky top-0">
-      <tr>
-        <th class="px-6 py-3 text-left text-sm font-medium uppercase">SSID</th>
-        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Raspberry Pi ID</th>
-        <th class="px-6 py-3 text-left text-sm font-medium uppercase">BSSID</th>
-        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Rate</th>
-        <th class="px-6 py-3 text-left text-sm font-medium uppercase">Signal</th>
-      </tr>
-    </thead>
-
-    <tbody class="divide-y divide-gray-300 text-gray-800">
-      <tr v-for="ap in raspberryAPs" :key="ap.ssid">
-        <td class="px-6 py-4">{{ ap.ssid }}</td>
-        <td class="px-6 py-4">{{ ap.raspberrypi_id }}</td>
-        <td class="px-6 py-4">{{ ap.bssid }}</td>
-        <td class="px-6 py-4">{{ ap.rate }} Mbits/s</td>
-        <td class="px-6 py-4">{{ ap.signal }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-</div>
+    
 
 
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -146,55 +123,46 @@
       </div>
     </div>
 
-    <div v-if="graphsVisible" class="mt-6">
-
-      <div class="w-1/3">
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
-          width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
-      </div>
-
-      <div class="flex gap-6">
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1744120391807&to=1746712391807&timezone=browser&panelId=2&__feature.dashboardSceneSolo"
-          class="w-1/2 h-96 rounded-lg shadow-lg"></iframe>
-
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
-          class="w-1/2 h-96 rounded-lg shadow-lg"></iframe>
-      </div>
-      <iframe
-        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1746138776000&to=1746762000000&timezone=browser&panelId=4&__feature.dashboardSceneSolo"
-        class="w-1/2 h-96 rounded-lg shadow-lg"></iframe>
-
-      <div class="mt-6">
+    <div v-if="graphsVisible" class="mt-6 space-y-6">
         <iframe
           src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
           class="w-full h-96 rounded-lg shadow-lg"></iframe>
-      </div>
+
+      <iframe
+          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+          class="w-full h-96 rounded-lg shadow-lg"></iframe>
+
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1744120391807&to=1746712391807&timezone=browser&panelId=2&__feature.dashboardSceneSolo"
+          class="w-full h-96 rounded-lg shadow-lg"></iframe>
+
+        
+      <iframe
+        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1746138776000&to=1746762000000&timezone=browser&panelId=4&__feature.dashboardSceneSolo"
+        class="w-full h-96 rounded-lg shadow-lg"></iframe>
+
+        <iframe
+          src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+          width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
 
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryById, fetchRaspberryPis, fetchAPsById, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
 const allRaspberries = ref([]);
 const raspberries = ref([]);
 const router = useRouter();
-const route = useRoute();
-const initialId = route.params.id;
 const selectedRaspberries = ref([]);
-const raspberryAPs = ref([]);
 const graphsVisible = ref(false);
 const previousStatuses = ref({}); 
-const selectedRaspberry = ref(null);
+const showViewDataNotification = ref(false);
 
 function getRaspberryById(id) {
   return allRaspberries.value.find(r => r.id === id);
@@ -216,14 +184,10 @@ function navigateToRaspberry(id) {
 
 function viewSelectedData() {
   graphsVisible.value = selectedRaspberries.value.length > 0;
+  notifyUser();
 }
 
-function limitSelection(event) {
-  if (selectedRaspberries.value.length > 3) {
-    event.preventDefault();
-    alert('You can only select up to 3 Raspberry Pis.');
-  }
-}
+
 
 async function exportData() {
   await fetchExcelData();
@@ -295,12 +259,27 @@ function closePopup() {
   isPopupVisible.value = false;
 }
 
-async function onRaspberrySelected(raspberry) {
-  selectedRaspberry.value = await fetchRaspberryById(raspberry.id);
-  raspberryAPs.value = await fetchAPsById(raspberry.id)
 
-  if (raspberry && raspberry.id) {
-    router.push({ name: 'raspberry-details', params: { id: raspberry.id } });
+
+// notifications 
+const notifyUser = () => {
+  showViewDataNotification.value = true;
+  setTimeout(() => {
+    showViewDataNotification.value = false;
+  }, 3000);
+  toast.success('Graphs are loading, see them below.');
+};
+
+function limitSelection(raspberry) {
+  if (selectedRaspberries.value.includes(raspberry)) {
+    selectedRaspberries.value = selectedRaspberries.value.filter(r => r !== raspberry);
+  } else {
+    if (selectedRaspberries.value.length >= 3) {
+      alert('You can only select up to 3 Raspberry Pis.');
+      return;
+    }
+
+    selectedRaspberries.value.push(raspberry);
   }
 }
 
@@ -310,7 +289,6 @@ onMounted(async () => {
   const response = await fetchRaspberryPis();
   allRaspberries.value = response;
   raspberries.value = response;
-  onRaspberrySelected({ id: initialId });
 
 
   for (const rpi of raspberries.value) {
