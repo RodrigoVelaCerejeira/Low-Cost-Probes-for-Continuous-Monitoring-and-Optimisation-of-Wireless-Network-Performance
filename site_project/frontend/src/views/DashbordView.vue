@@ -89,14 +89,14 @@
 
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg p-6 w-1/3">
-        <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures in the Last Hour</h2>
+        <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures</h2>
         <div v-if="getRaspberryById(selectedRaspberries[0]) && !is_online(getRaspberryById(selectedRaspberries[0]))"
           class="px-6 py-4">
           Raspberry Pi {{ selectedRaspberries[0] }} is offline.
         </div>
 
         <div v-else class="px-6 py-4">
-          <h3 class="text-lg font-medium mb-2">Failures:</h3>
+          <h3 class="text-lg font-medium mb-2">Failures last hour:</h3>
           <ul v-if="Object.keys(selectedFailures).length > 0">
             <li v-for="failureType in Object.keys(selectedFailures)" :key="failureType">
               <strong>
@@ -110,7 +110,22 @@
             </li>
           </ul>
           <p v-else>No failures in the last hour.</p>
-          </div>
+          <br>
+          <h3 class="text-lg font-medium mb-2">Failures last day:</h3>
+          <ul v-if="Object.keys(selectedFailuresDay).length > 0">
+            <li v-for="failureType in Object.keys(selectedFailuresDay)" :key="failureType">
+              <strong>
+                <template v-if="failureType === 'latency'">High Latency</template>
+                <template v-else-if="failureType === 'download_speed'">Low Download Speed</template>
+                <template v-else-if="failureType === 'upload_speed'">Low Upload Speed</template>
+                <template v-else-if="failureType === 'packet_loss'">Packet Loss</template>
+                <template v-else-if="failureType === 'round_trip_time'">High RTT</template>
+                <template v-else>{{ failureType }}</template>
+              </strong>
+            </li>
+          </ul>
+          <p v-else>No failures in the last day.</p>
+        </div>
 
 
           <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
@@ -270,10 +285,11 @@ async function getSpecificFailures(raspberryId, period) {
 
 const isPopupVisible = ref(false);
 const selectedFailures = ref({});
+const selectedFailuresDay = ref({});
 
 async function openPopup(raspberryId) {
   selectedFailures.value = await getSpecificFailures(raspberryId, "hour");
-console.log("selectedFailures:", selectedFailures.value);
+  selectedFailuresDay.value = await getSpecificFailures(raspberryId, "day");
   isPopupVisible.value = true;
 }
 
