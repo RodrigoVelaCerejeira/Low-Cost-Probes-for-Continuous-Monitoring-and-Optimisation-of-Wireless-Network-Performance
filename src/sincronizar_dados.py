@@ -1,3 +1,4 @@
+import os
 from logging import error
 import mariadb
 import subprocess
@@ -31,6 +32,9 @@ def get_mac_address(interface: str):
             return f.read().strip()
     except FileNotFoundError:
         return None
+
+def get_location():
+    return os.getenv("LOCATION")
 
 
 def conectar_local():
@@ -86,23 +90,26 @@ def inserir_raspberrypi_central(conn_central, mac_address):
     # Verifica se o raspberrypi_id já existe na tabela central
     cursor_central.execute(
         "SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
-    result = cursor_central.fetchone()
+    result = cursor_central.fetchone()[0]
+    location = get_location()
 
     # Se o Raspberry Pi não existir, insira-o
     if not result:
         print(f"Inserindo Raspberry Pi {mac_address} na tabela central.")
         cursor_central.execute("""
-            INSERT INTO raspberrypis (mac_address)
-            VALUES (?)
-        """, (mac_address,))
+            INSERT INTO raspberrypis (mac_address, localizacao)
+            VALUES (?, ?)
+        """, (mac_address, location))
         conn_central.commit()
         print(f"Raspberry Pi {mac_address} inserido com sucesso!")
     else:
         cursor_central.execute("""
             UPDATE raspberrypis
-            SET ultimo_registro = CURRENT_TIMESTAMP
+            SET
+            ultimo_registro = CURRENT_TIMESTAMP,
+            localizacao = ?
             WHERE id = ?
-        """, result)
+        """, (location, result))
         conn_central.commit()
 
     # Retorna o id do Raspberry Pi inserido ou existente
