@@ -4,14 +4,13 @@ import (
 	"github.com/go-chi/chi"
 	chimiddle "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"net/http"
 )
 
 func Handler(r *chi.Mux) {
 	r.Use(chimiddle.StripSlashes)
 	r.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		AllowedOrigins: []string{"https://*", "http://*"},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
@@ -29,5 +28,8 @@ func Handler(r *chi.Mux) {
 		router.Get("/lastday", GetFailuresLastDay)
 		router.Get("/excel", ExportToExcel)
 		router.Get("/excel/{id}", ExportToExcelById)
+	})
+	r.Options("/*", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
 	})
 }
