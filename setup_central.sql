@@ -10,7 +10,8 @@ DROP TABLE IF EXISTS raspberrypis;
 CREATE TABLE IF NOT EXISTS raspberrypis (
     id INT AUTO_INCREMENT PRIMARY KEY,
     mac_address VARCHAR(17) UNIQUE NOT NULL, -- Endereço MAC único
-    ultimo_registro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+    ultimo_registro DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    localizacao VARCHAR(50)
 );
 
 -- CREATE TABLE IF NOT EXISTS logs (
