@@ -110,14 +110,12 @@
             </li>
           </ul>
           <p v-else>No failures in the last hour.</p>
-
-
+          </div>
 
 
           <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
             Close
           </button>
-        </div>
       </div>
     </div>
 
