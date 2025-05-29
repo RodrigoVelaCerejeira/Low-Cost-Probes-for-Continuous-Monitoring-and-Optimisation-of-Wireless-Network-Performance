@@ -1,8 +1,7 @@
 <template>
   <h1 class="text-5xl font-roboto py-24 text-white text-center mt-8">Overview of Connected Raspberry Pis</h1>
   <div class="flex flex-col gap-8 px-8 pb-24">
-    <div
-      class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full overflow-y-scroll">
+    <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full overflow-y-scroll">
       <h2 class="text-2xl font-semibold mb-4">Raspberry Pi Status</h2>
       <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl overflow-hidden">
         <thead class="bg-gray-100 text-gray-700">
@@ -69,7 +68,7 @@
           Export Data
         </button>
 
-        <button @click="openPopup(rpi)" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+        <button @click="openPopup(selectedRaspberries[0])" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
             bg-indigo-600 text-white hover:bg-indigo-700 mr-2">
@@ -99,31 +98,31 @@
         <div v-else class="px-6 py-4">
           <h3 class="text-lg font-medium mb-2">Failures:</h3>
           <ul v-if="Object.keys(selectedFailures).length > 0">
-            <li v-for="(failureList, failureType) in selectedFailures" :key="failureType">
-              <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}
+            <li v-for="failureType in Object.keys(selectedFailures)" :key="failureType">
+              <strong>
+                <template v-if="failureType === 'latency'">High Latency</template>
+                <template v-else-if="failureType === 'download_speed'">Low Download Speed</template>
+                <template v-else-if="failureType === 'upload_speed'">Low Upload Speed</template>
+                <template v-else-if="failureType === 'packet_loss'">Packet Loss</template>
+                <template v-else-if="failureType === 'round_trip_time'">High RTT</template>
+                <template v-else>{{ failureType }}</template>
+              </strong>
             </li>
           </ul>
+          <p v-else>No failures in the last hour.</p>
 
 
-          <p v-else>No failures in the last day.</p>
+
+
+          <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            Close
+          </button>
         </div>
-
-
-        <ul>
-          <li v-for="(failureList, failureType) in selectedFailures" :key="failureType">
-            <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}
-          </li>
-        </ul>
-        <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-          Close
-        </button>
       </div>
     </div>
 
 
-
-    <div
-      class="bg-white text-gray-800 rounded-3xl shadow-xl p-8 w-full h-full overflow-y-scroll">
+    <div class="bg-white text-gray-800 rounded-3xl shadow-xl p-8 w-full h-full overflow-y-scroll">
       <h2 class="text-2xl font-semibold mb-4">Failures</h2>
       <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
         <thead class="bg-gray-100 text-gray-700">
@@ -174,7 +173,7 @@ const raspberries = ref([]);
 const router = useRouter();
 const selectedRaspberries = ref([]);
 const graphsVisible = ref(false);
-const previousStatuses = ref({}); 
+const previousStatuses = ref({});
 const showViewDataNotification = ref(false);
 
 function getRaspberryById(id) {
@@ -225,10 +224,11 @@ async function refreshRaspberryData() {
 async function checkLastHourRecords(raspberryId) {
   try {
     const failures = await fetchFailuresLastHour();
-    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    const hasFailures = Object.values(failures)
+      .filter(failureList => Array.isArray(failureList))
+      .some((failureList) => failureList.includes(raspberryId));
     return hasFailures; // true -> exist failures, false -> no failures
   } catch (error) {
-    console.error(`Error checking last hour records for Raspberry Pi ${raspberryId}:`, error);
     return false;
   }
 }
@@ -257,24 +257,25 @@ async function getSpecificFailures(raspberryId, period) {
 
     const specificFailures = {};
     for (const [failureType, failureList] of Object.entries(failures)) {
-      if (failureList.includes(raspberryId)) {
-        specificFailures[failureType] = filteredFailures;
+      if (Array.isArray(failureList) && failureList.map(Number).includes(Number(raspberryId))) {
+        specificFailures[failureType] = failureList;
       }
     }
 
     return specificFailures;
-    } catch (error) {
+  } catch (error) {
     console.error(`Error fetching specific failures for Raspberry Pi ${raspberryId}:`, error);
     return {};
-    }
-  
+  }
 }
+
 
 const isPopupVisible = ref(false);
 const selectedFailures = ref({});
 
 async function openPopup(raspberryId) {
-  selectedFailures.value = await getSpecificFailures(raspberryId, "day");
+  selectedFailures.value = await getSpecificFailures(raspberryId, "hour");
+console.log("selectedFailures:", selectedFailures.value);
   isPopupVisible.value = true;
 }
 
