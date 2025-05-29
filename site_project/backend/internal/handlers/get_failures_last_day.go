@@ -10,27 +10,27 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func GetFailuresLastHour(w http.ResponseWriter, r *http.Request) {
+func GetFailuresLastDay(w http.ResponseWriter, r *http.Request) {
 	var allFailures = make(map[string][]int)
 
 	// Packet Loss
-	packetLossFailures := getFailuresPacketLossLastHour()
+	packetLossFailures := getFailuresPacketLossLastDay()
 	allFailures["packet_loss"] = packetLossFailures
 
 	// Round Trip Time
-	roundTripTimeFailures := getFailuresRoundTripTimeLastHour()
+	roundTripTimeFailures := getFailuresRoundTripTimeLastDay()
 	allFailures["round_trip_time"] = roundTripTimeFailures
 
 	// Download Speed
-	downloadSpeedFailures := getFailureDownloadSpeedLastHour()
+	downloadSpeedFailures := getFailureDownloadSpeedLastDay()
 	allFailures["download_speed"] = downloadSpeedFailures
 
 	// Latency
-	latencyFailures := getFailureLatencyLastHour()
+	latencyFailures := getFailureLatencyLastDay()
 	allFailures["latency"] = latencyFailures
 
 	// Upload Speed
-	uploadSpeedFailures := getFailureUploadSpeedLastHour()
+	uploadSpeedFailures := getFailureUploadSpeedLastDay()
 	allFailures["upload_speed"] = uploadSpeedFailures
 
 	w.Header().Set("Content-type", "application/json")
@@ -41,14 +41,14 @@ func GetFailuresLastHour(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getFailuresPacketLossLastHour() []int {
-	threshold := 2 // Mudar
+func getFailuresPacketLossLastDay() []int {
+	threshold := 100 // Mudar
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, 
 		SUM(perda_pacotes) AS total_packet_loss
 		FROM dados_rede
-		WHERE timestamp >= NOW() -INTERVAL 1 HOUR 
+		WHERE timestamp >= NOW() -INTERVAL 24 HOUR 
 		GROUP BY raspberrypi_id;
 		`)
 
@@ -77,13 +77,13 @@ func getFailuresPacketLossLastHour() []int {
 	return ids
 }
 
-func getFailuresRoundTripTimeLastHour() []int {
+func getFailuresRoundTripTimeLastDay() []int {
 	threshold := 200.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(rtt_avg) AS average_rtt
 		FROM dados_rede
-		WHERE timestamp >= NOW() - INTERVAL 1 HOUR
+		WHERE timestamp >= NOW() - INTERVAL 24 HOUR
 		GROUP BY raspberrypi_id;
 		`)
 
@@ -110,13 +110,13 @@ func getFailuresRoundTripTimeLastHour() []int {
 
 }
 
-func getFailureDownloadSpeedLastHour() []int {
+func getFailureDownloadSpeedLastDay() []int {
 	threshold := 10.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(download_mbps) AS average_download
 		FROM dados_rede
-		WHERE timestamp >= NOW() - INTERVAL 1 HOUR
+		WHERE timestamp >= NOW() - INTERVAL 24 HOUR
 		GROUP BY raspberrypi_id;
 		`)
 
@@ -141,13 +141,13 @@ func getFailureDownloadSpeedLastHour() []int {
 	return ids
 }
 
-func getFailureLatencyLastHour() []int {
+func getFailureLatencyLastDay() []int {
 	threshold := 50.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(latencia_ms) AS average_latency
 		FROM dados_rede
-		WHERE timestamp >= NOW() - INTERVAL 1 HOUR
+		WHERE timestamp >= NOW() - INTERVAL 24 HOUR
 		GROUP BY raspberrypi_id;
 		`)
 
@@ -172,13 +172,13 @@ func getFailureLatencyLastHour() []int {
 	return ids
 }
 
-func getFailureUploadSpeedLastHour() []int {
+func getFailureUploadSpeedLastDay() []int {
 	threshold := 10.0
 
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, AVG(upload_mbps) AS average_upload
 		FROM dados_rede
-		WHERE timestamp >= NOW() - INTERVAL 1 HOUR
+		WHERE timestamp >= NOW() - INTERVAL 24 HOUR
 		GROUP BY raspberrypi_id;
 		`)
 

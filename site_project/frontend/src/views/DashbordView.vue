@@ -2,9 +2,9 @@
   <h1 class="text-5xl font-roboto py-24 text-white text-center mt-8">Overview of Connected Raspberry Pis</h1>
   <div class="flex flex-col gap-8 px-8 pb-24">
     <div
-      class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full overflow-y-scroll">
+      class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full overflow-y-scroll">
       <h2 class="text-2xl font-semibold mb-4">Raspberry Pi Status</h2>
-      <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl overflow-hidden">
         <thead class="bg-gray-100 text-gray-700">
           <tr>
             <th class="px-6 py-3 text-left text-sm font-medium uppercase">Select</th>
@@ -20,12 +20,8 @@
           <tr v-for="rpi in raspberries" :key="rpi.id" class="hover:bg-gray-100 cursor-pointer"
             @click="navigateToRaspberry(rpi.id)">
             <td class="px-6 py-4">
-              <input 
-              type="checkbox" 
-              :value="rpi.id" 
-              v-model="selectedRaspberries"
-              class="form-checkbox h-7 w-7 text-indigo-600" 
-              @click.stop />
+              <input type="checkbox" :value="rpi.id" v-model="selectedRaspberries"
+                class="form-checkbox h-7 w-7 text-indigo-600" @click.stop />
             </td>
             <td class="px-6 py-4">{{ rpi.mac }}</td>
             <td v-if="is_online(rpi)" class="px-6 py-4">
@@ -40,14 +36,15 @@
             </td>
             <td class="px-6 py-4"> {{ rpi.ultimo_registro }}</td>
             <td class="px-6 py-4">AQUARIO</td>
-            <td v-if="has_null(rpi)" class="px-6 py-4">
-              Yes
-            </td>
-            <td v-else class="px-6 py-4">
-              No
-            </td>
+
             <td class="px-6 py-4">
-              <span v-if="!is_online(rpi) || rpi.has_error" class="inline-block w-4 h-4 bg-red-500 rounded-full"
+              <span v-if="!is_online(rpi) || rpi.has_errorDay" class="inline-block w-4 h-4 bg-red-500 rounded-full"
+                title="Error"></span>
+              <span v-else class="inline-block w-4 h-4 bg-green-500 rounded-full" title="No Error"></span>
+            </td>
+
+            <td class="px-6 py-4">
+              <span v-if="!is_online(rpi) || rpi.has_errorHour" class="inline-block w-4 h-4 bg-red-500 rounded-full"
                 title="Error"></span>
               <span v-else class="inline-block w-4 h-4 bg-green-500 rounded-full" title="No Error"></span>
             </td>
@@ -72,14 +69,15 @@
           Export Data
         </button>
 
-        <button @click="openPopup(selectedRaspberries[0])" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+        <button @click="openPopup(rpi)" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
             bg-indigo-600 text-white hover:bg-indigo-700 mr-2">
           View Failures
         </button>
 
-        <button @click="viewSelectedData" :disabled="selectedRaspberries.length === 0 || selectedRaspberries.length > 3" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+        <button @click="viewSelectedData" :disabled="selectedRaspberries.length === 0 || selectedRaspberries.length > 3"
+          class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
             bg-indigo-600 text-white hover:bg-indigo-700">
@@ -89,8 +87,9 @@
       </div>
     </div>
 
+
     <div v-if="isPopupVisible" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+      <div class="bg-white rounded-lg p-6 w-1/3">
         <h2 class="text-xl font-semibold mb-4">Raspberry Pi Failures in the Last Hour</h2>
         <div v-if="getRaspberryById(selectedRaspberries[0]) && !is_online(getRaspberryById(selectedRaspberries[0]))"
           class="px-6 py-4">
@@ -104,9 +103,10 @@
               <strong>{{ failureType }}:</strong> {{ failureList.join(', ') }}
             </li>
           </ul>
-          <p v-else>No failures in the last hour.</p>
-        </div>
 
+
+          <p v-else>No failures in the last day.</p>
+        </div>
 
 
         <ul>
@@ -120,27 +120,43 @@
       </div>
     </div>
 
+
+
+    <div
+      class="bg-white text-gray-800 rounded-3xl shadow-xl p-8 w-full h-full overflow-y-scroll">
+      <h2 class="text-2xl font-semibold mb-4">Failures</h2>
+      <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Raspberry Id</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Failure</th>
+            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Time</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+
     <div v-if="graphsVisible" class="mt-6 space-y-6">
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
-          class="w-full h-96 rounded-lg shadow-lg"></iframe>
+      <iframe
+        src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
       <iframe
-          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
-          class="w-full h-96 rounded-lg shadow-lg"></iframe>
+        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1744120391807&to=1746712391807&timezone=browser&panelId=2&__feature.dashboardSceneSolo"
-          class="w-full h-96 rounded-lg shadow-lg"></iframe>
+      <iframe
+        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1744120391807&to=1746712391807&timezone=browser&panelId=2&__feature.dashboardSceneSolo"
+        class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
-        
+
       <iframe
         src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1746138776000&to=1746762000000&timezone=browser&panelId=4&__feature.dashboardSceneSolo"
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
-        <iframe
-          src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
-          width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
+      <iframe
+        src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
 
     </div>
   </div>
@@ -149,7 +165,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
@@ -196,11 +212,87 @@ async function refreshRaspberryData() {
   raspberries.value = response;
 
   for (const rpi of raspberries.value) {
-    rpi.has_error = await checkLastHourRecords(rpi.id);
-    rpi.failures = await getSpecificFailures(rpi.id);
+    rpi.has_errorHour = await checkLastHourRecords(rpi.id);
+    rpi.has_errorDay = await checkLastDayRecords(rpi.id);
+    rpi.failuresHour = await getSpecificFailures(rpi.id, "hour");
+    rpi.failuresDay = await getSpecificFailures(rpi.id, "day");
   }
 }
 
+
+// ----- check failures -----
+
+async function checkLastHourRecords(raspberryId) {
+  try {
+    const failures = await fetchFailuresLastHour();
+    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    return hasFailures; // true -> exist failures, false -> no failures
+  } catch (error) {
+    console.error(`Error checking last hour records for Raspberry Pi ${raspberryId}:`, error);
+    return false;
+  }
+}
+
+async function checkLastDayRecords(raspberryId) {
+  try {
+    const failures = await fetchFailuresLastDay();
+    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    return hasFailures; // true -> exist failures, false -> no failures
+  } catch (error) {
+    console.error(`Error checking last day records for Raspberry Pi ${raspberryId}:`, error);
+    return false;
+  }
+}
+
+async function getSpecificFailures(raspberryId, period) {
+  try {
+    let failures;
+    if (period === "hour") {
+      failures = await fetchFailuresLastHour();
+    } else if (period === "day") {
+      failures = await fetchFailuresLastDay();
+    } else {
+      throw new Error("Invalid period specified");
+    }
+
+    const specificFailures = {};
+    for (const [failureType, failureList] of Object.entries(failures)) {
+      if (failureList.includes(raspberryId)) {
+        specificFailures[failureType] = filteredFailures;
+      }
+    }
+
+    return specificFailures;
+    } catch (error) {
+    console.error(`Error fetching specific failures for Raspberry Pi ${raspberryId}:`, error);
+    return {};
+    }
+  
+}
+
+const isPopupVisible = ref(false);
+const selectedFailures = ref({});
+
+async function openPopup(raspberryId) {
+  selectedFailures.value = await getSpecificFailures(raspberryId, "day");
+  isPopupVisible.value = true;
+}
+
+function closePopup() {
+  isPopupVisible.value = false;
+}
+
+
+
+// ----- notifications -----
+
+const notifyUser = () => {
+  showViewDataNotification.value = true;
+  setTimeout(() => {
+    showViewDataNotification.value = false;
+  }, 3000);
+  toast.success('Graphs are loading, see them below.');
+};
 
 function checkStatusChange() {
   raspberries.value.forEach((rpi) => {
@@ -215,60 +307,6 @@ function checkStatusChange() {
   });
 }
 
-async function checkLastHourRecords(raspberryId) {
-  try {
-    const failures = await fetchFailuresLastHour();
-    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
-    return hasFailures; // true -> exist failures, false -> no failures
-  } catch (error) {
-    console.error(`Error checking last hour records for Raspberry Pi ${raspberryId}:`, error);
-    return false;
-  }
-}
-
-async function getSpecificFailures(raspberryId) {
-  try {
-    const failures = await fetchFailuresLastHour();
-    const specificFailures = {};
-
-    for (const [failureType, failureList] of Object.entries(failures)) {
-      if (failureList.includes(raspberryId)) {
-        specificFailures[failureType] = failureList;
-      }
-    }
-
-    return specificFailures;
-  } catch (error) {
-    console.error(`Error fetching specific failures for Raspberry Pi ${raspberryId}:`, error);
-    return {};
-  }
-}
-
-const isPopupVisible = ref(false);
-const selectedFailures = ref({});
-
-async function openPopup(raspberryId) {
-  selectedFailures.value = await getSpecificFailures(raspberryId);
-  isPopupVisible.value = true;
-}
-
-function closePopup() {
-  isPopupVisible.value = false;
-}
-
-
-
-// notifications 
-const notifyUser = () => {
-  showViewDataNotification.value = true;
-  setTimeout(() => {
-    showViewDataNotification.value = false;
-  }, 3000);
-  toast.success('Graphs are loading, see them below.');
-};
-
-
-
 onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
   const response = await fetchRaspberryPis();
@@ -277,8 +315,10 @@ onMounted(async () => {
 
 
   for (const rpi of raspberries.value) {
-    rpi.has_error = await checkLastHourRecords(rpi.id);
-    rpi.failures = await getSpecificFailures(rpi.id);
+    rpi.has_errorHour = await checkLastHourRecords(rpi.id);
+    rpi.has_errorDay = await checkLastDayRecords(rpi.id);
+    rpi.failuresHour = await getSpecificFailures(rpi.id, "hour");
+    rpi.failuresDay = await getSpecificFailures(rpi.id, "day");
   }
 
   raspberries.value.forEach((rpi) => {

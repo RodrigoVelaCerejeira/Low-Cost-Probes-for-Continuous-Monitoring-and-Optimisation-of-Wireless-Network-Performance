@@ -3,7 +3,7 @@
     <div class="h-[500px] flex gap-8 w-full">
 
       <div
-        class="flex-2 h-full w-1/3 bg-white rounded-3xl shadow-2xl transition transform duration-500 ease-in-out hover:scale-105 p-8 text-gray-800">
+        class="flex-2 h-full w-1/3 bg-white rounded-3xl p-8 text-gray-800">
         <h2 class="text-3xl font-bold">Raspberry Pi</h2>
 
         <div class="h-max flex flex-col items-center">
@@ -21,13 +21,10 @@
         </div>
         <button @click="exportExcelById(selectedRaspberry.id)"
           class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Export Data</button>
-          <br>
-          <button 
-          class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Reset RaspberryPi</button>
       </div>
 
       <div
-        class="bg-white text-gray-800 rounded-3xl shadow-xl transition transform duration-500 ease-in-out hover:scale-105 p-8 w-full h-full ">
+        class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full ">
         <h2 class="m-4 text-2xl font-semibold ">APs</h2>
         <div class="overflow-y-auto max-h-96 rounded-xl shadow">
           <table class="min-w-full divide-y divide-gray-700 bg-white">

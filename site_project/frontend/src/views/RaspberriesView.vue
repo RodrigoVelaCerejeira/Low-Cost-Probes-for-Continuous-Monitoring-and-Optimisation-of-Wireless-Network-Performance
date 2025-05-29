@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex p-24 items-center justify-around">
     <div
-      class="h-max w-max bg-white rounded-3xl shadow-2xl transition transform duration-500 ease-in-out hover:scale-105 p-8 text-gray-800">
+      class="h-max w-max bg-white rounded-3xl shadow-2xl p-8 text-gray-800">
 
       <h2 class="text-3xl font-bold mb-6">Raspberry Pi</h2>
 

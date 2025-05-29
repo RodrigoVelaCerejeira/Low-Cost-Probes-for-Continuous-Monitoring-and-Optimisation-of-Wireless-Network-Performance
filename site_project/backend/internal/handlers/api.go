@@ -26,6 +26,7 @@ func Handler(r *chi.Mux) {
 		router.Get("/nulls", GetNullsById)
 		router.Get("/{id}", GetProductById)
 		router.Get("/lasthour", GetFailuresLastHour)
+		router.Get("/lastday", GetFailuresLastDay)
 		router.Get("/excel", ExportToExcel)
 		router.Get("/excel/{id}", ExportToExcelById)
 	})

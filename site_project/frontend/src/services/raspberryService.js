@@ -40,6 +40,16 @@ export const fetchFailuresLastHour = async () => {
   }
 };
 
+export const fetchFailuresLastDay = async () => {
+  try {
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/lastday');
+    return response.data;
+  } catch (error) {
+    console.error('Error finding Raspberry Pis with failures in the last day:', error);
+    throw error;
+  }
+};
+
 export const fetchAPs = async () => {
   try {
     const response = await axios.get('http://192.92.147.85:3001/raspberry/aps');
