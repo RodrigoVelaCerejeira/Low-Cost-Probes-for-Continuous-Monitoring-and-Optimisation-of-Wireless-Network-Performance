@@ -24,8 +24,8 @@
               type="checkbox" 
               :value="rpi.id" 
               v-model="selectedRaspberries"
-              @change="limitSelection(raspberry)"
-                class="form-checkbox h-7 w-7 text-indigo-600" @click.stop="limijtSelection" />
+              class="form-checkbox h-7 w-7 text-indigo-600" 
+              @click.stop />
             </td>
             <td class="px-6 py-4">{{ rpi.mac }}</td>
             <td v-if="is_online(rpi)" class="px-6 py-4">
@@ -72,7 +72,7 @@
           Export Data
         </button>
 
-        <button @click="openPopup(rpi)" :disabled="selectedRaspberries.length != 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+        <button @click="openPopup(selectedRaspberries[0])" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
             bg-indigo-600 text-white hover:bg-indigo-700 mr-2">
@@ -267,18 +267,6 @@ const notifyUser = () => {
   toast.success('Graphs are loading, see them below.');
 };
 
-function limitSelection(raspberry) {
-  if (selectedRaspberries.value.includes(raspberry)) {
-    selectedRaspberries.value = selectedRaspberries.value.filter(r => r !== raspberry);
-  } else {
-    if (selectedRaspberries.value.length >= 3) {
-      alert('You can only select up to 3 Raspberry Pis.');
-      return;
-    }
-
-    selectedRaspberries.value.push(raspberry);
-  }
-}
 
 
 onMounted(async () => {
