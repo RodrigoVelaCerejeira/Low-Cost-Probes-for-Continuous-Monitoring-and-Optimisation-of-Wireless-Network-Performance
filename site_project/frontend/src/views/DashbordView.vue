@@ -129,11 +129,6 @@
           </ul>
           <p v-else>No failures in the last day.</p>
         </div>
-
-
-        <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-          Close
-        </button>
       </div>
     </div>
 
@@ -252,7 +247,12 @@ async function checkLastHourRecords(raspberryId) {
 async function checkLastDayRecords(raspberryId) {
   try {
     const failures = await fetchFailuresLastDay();
-    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    const hasFailures = Object.values(failures || {}).some((failureList) => {
+      if (!Array.isArray(failureList) || failureList.length === 0) {
+        return false;
+      }
+      return failureList.includes(raspberryId);
+    });
     return hasFailures; // true -> exist failures, false -> no failures
   } catch (error) {
     console.error(`Error checking last day records for Raspberry Pi ${raspberryId}:`, error);
