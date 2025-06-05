@@ -13,7 +13,7 @@ def get_default_interface():
     # Get the name of the default interface (used for default route)
     result = subprocess.run(['ip', 'route'], capture_output=True, text=True)
     for line in result.stdout.splitlines():
-        if line.startswith('default'):
+        if line.startswith('default') and line.split()[4] != "tun0":
             return line.split()[4]
     return None
 
