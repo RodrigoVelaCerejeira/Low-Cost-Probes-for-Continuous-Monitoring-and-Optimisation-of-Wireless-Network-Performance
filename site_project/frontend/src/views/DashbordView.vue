@@ -34,7 +34,13 @@
               </span>
             </td>
             <td class="px-6 py-4"> {{ rpi.ultimo_registro }}</td>
-            <td class="px-6 py-4">AQUARIO</td>
+
+            <td v-if="rpi.location !== null">
+              <span class="px-6 py-4"> {{ rpi.location }} </span>
+            </td>
+            <td v-else>
+              <span class="px-6 py-4">No Location Given </span>
+            </td>
 
             <td class="px-6 py-4">
               <span v-if="!is_online(rpi) || rpi.has_errorDay" class="inline-block w-4 h-4 bg-red-500 rounded-full"
@@ -193,7 +199,6 @@ import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFai
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
-const allRaspberries = ref([]);
 const raspberries = ref([]);
 const router = useRouter();
 const selectedRaspberries = ref([]);
@@ -204,17 +209,13 @@ const failures = ref({});
 
 
 function getRaspberryById(id) {
-  return allRaspberries.value.find(r => r.id === id);
+  return raspberries.value.find(r => r.id === id);
 }
 
 function is_online(rpi) {
   const time = new Date(rpi.ultimo_registro).getTime();
   const currTime = new Date().getTime();
   return currTime - time < 8 * 60 * 1000;
-}
-
-function has_null(rpi) {
-  return nullIds?.value?.includes?.(rpi.id) ?? false;
 }
 
 function navigateToRaspberry(id) {
@@ -226,8 +227,6 @@ function viewSelectedData() {
   notifyUser();
 }
 
-
-
 async function exportData() {
   await fetchExcelData();
 }
@@ -236,6 +235,7 @@ async function exportData() {
 async function refreshRaspberryData() {
   const response = await fetchRaspberryPis();
   raspberries.value = response;
+
 
   for (const rpi of raspberries.value) {
     rpi.has_errorHour = await checkLastHourRecords(rpi.id);
@@ -344,7 +344,6 @@ function checkStatusChange() {
 onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
   const response = await fetchRaspberryPis();
-  allRaspberries.value = response;
   raspberries.value = response;
 
   response = await fetchAllFailures();
