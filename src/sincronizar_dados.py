@@ -90,7 +90,7 @@ def inserir_raspberrypi_central(conn_central, mac_address):
     # Verifica se o raspberrypi_id já existe na tabela central
     cursor_central.execute(
         "SELECT id FROM raspberrypis WHERE mac_address = ?", (mac_address,))
-    result = cursor_central.fetchone()[0]
+    result = cursor_central.fetchone()
     location = get_location()
 
     # Se o Raspberry Pi não existir, insira-o
@@ -103,6 +103,7 @@ def inserir_raspberrypi_central(conn_central, mac_address):
         conn_central.commit()
         print(f"Raspberry Pi {mac_address} inserido com sucesso!")
     else:
+        result = result[0]
         cursor_central.execute("""
             UPDATE raspberrypis
             SET
