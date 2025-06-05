@@ -128,9 +128,9 @@
         </div>
 
 
-          <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-            Close
-          </button>
+        <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+          Close
+        </button>
       </div>
     </div>
 
@@ -145,6 +145,15 @@
             <th class="px-6 py-3 text-left text-sm font-medium uppercase">Time</th>
           </tr>
         </thead>
+        <tbody class="divide-y divide-gray-300 text-gray-800">
+          <template v-for="(failureList, raspberryId) in failures" :key="raspberryId">
+            <tr v-for="failure in failureList" :key="failure.time + failure.type + raspberryId">
+              <td class="px-6 py-4">{{ raspberryId }}</td>
+              <td class="px-6 py-4">{{ failure.type }}</td>
+              <td class="px-6 py-4">{{ failure.time }}</td>
+            </tr>
+          </template>
+        </tbody>
       </table>
     </div>
 
@@ -177,7 +186,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFailuresLastHour, fetchExcelData } from '@/services/raspberryService';
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFailuresLastHour, fetchAllFailures, fetchExcelData } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
@@ -188,6 +197,8 @@ const selectedRaspberries = ref([]);
 const graphsVisible = ref(false);
 const previousStatuses = ref({});
 const showViewDataNotification = ref(false);
+const failures = ref({});
+
 
 function getRaspberryById(id) {
   return allRaspberries.value.find(r => r.id === id);
@@ -327,6 +338,9 @@ onMounted(async () => {
   const response = await fetchRaspberryPis();
   allRaspberries.value = response;
   raspberries.value = response;
+
+  response = await fetchAllFailures();
+  failures.value = response;
 
 
   for (const rpi of raspberries.value) {

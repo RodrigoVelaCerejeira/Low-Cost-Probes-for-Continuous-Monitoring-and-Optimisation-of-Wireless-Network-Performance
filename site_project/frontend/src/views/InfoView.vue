@@ -77,7 +77,6 @@
         <li>Upload Speed Over Time;</li>
         <li>Packet Loss;</li>
         <li>Latency;</li>
-        <li>Jitter;</li>
         <li>Round-Trip Time (RTT).</li>
 
       </ul>
