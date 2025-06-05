@@ -13,10 +13,10 @@ import (
 func GetProductById(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
-	row := database.DB.QueryRow("SELECT id, mac_address, Ultimo_registro FROM raspberrypis WHERE id = ?", id)
+	row := database.DB.QueryRow("SELECT id, mac_address, ultimo_registro, localizacao FROM raspberrypis WHERE id = ?", id)
 
 	var raspberry database.Raspberry
-	if err := row.Scan(&raspberry.Id, &raspberry.Mac_Address, &raspberry.Ultimo_registro); err != nil {
+	if err := row.Scan(&raspberry.Id, &raspberry.Mac_Address, &raspberry.Ultimo_registro, &raspberry.Location); err != nil {
 		log.Error(err)
 		api.InternalErrorHandler(w)
 	}

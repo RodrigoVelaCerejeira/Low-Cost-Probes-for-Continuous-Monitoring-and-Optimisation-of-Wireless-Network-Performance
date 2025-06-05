@@ -15,6 +15,7 @@ type Raspberry struct {
 	Ultimo_registro string   `json:"ultimo_registro"`
 	HasError        bool     `json:"has_error"`
 	Failures        []string `json:"failures"`
+	Location        string   `json:"location"`
 }
 
 type Aps struct {

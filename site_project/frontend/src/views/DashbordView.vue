@@ -93,6 +93,9 @@
         <div v-if="getRaspberryById(selectedRaspberries[0]) && !is_online(getRaspberryById(selectedRaspberries[0]))"
           class="px-6 py-4">
           Raspberry Pi {{ selectedRaspberries[0] }} is offline.
+          <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+            Close
+          </button>
         </div>
 
         <div v-else class="px-6 py-4">
@@ -260,7 +263,12 @@ async function checkLastHourRecords(raspberryId) {
 async function checkLastDayRecords(raspberryId) {
   try {
     const failures = await fetchFailuresLastDay();
-    const hasFailures = Object.values(failures).some((failureList) => failureList.includes(raspberryId));
+    const hasFailures = Object.values(failures || {}).some((failureList) => {
+      if (!Array.isArray(failureList) || failureList.length === 0) {
+        return false;
+      }
+      return failureList.includes(raspberryId);
+    });
     return hasFailures; // true -> exist failures, false -> no failures
   } catch (error) {
     console.error(`Error checking last day records for Raspberry Pi ${raspberryId}:`, error);
@@ -299,8 +307,8 @@ const selectedFailures = ref({});
 const selectedFailuresDay = ref({});
 
 async function openPopup(raspberryId) {
-  selectedFailures.value = await getSpecificFailures(raspberryId, "hour");
   selectedFailuresDay.value = await getSpecificFailures(raspberryId, "day");
+  console.log("selectedFailures:", selectedFailures.value);
   isPopupVisible.value = true;
 }
 
