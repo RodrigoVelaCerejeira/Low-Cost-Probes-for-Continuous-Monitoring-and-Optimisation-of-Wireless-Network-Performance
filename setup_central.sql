@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS erros_dados_rede (
     rtt_max FLOAT,
     rtt_mdev FLOAT,
     num_aps INT,
+    err_num INT,
     FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)
 );
 
@@ -65,42 +66,57 @@ FLUSH PRIVILEGES;
 
 DELIMITER //
 
+DELIMITER //
+
 CREATE TRIGGER trg_erros_na_rede
 AFTER INSERT ON dados_rede
 FOR EACH ROW
 BEGIN
-  IF NEW.latencia_ms > 50.0
-  OR NEW.perda_pacotes > 2
-  OR NEW.download_mbps < 10.0
-  OR NEW.upload_mbps < 10.0
-  OR NEW.rtt_avg > 200.0 THEN
+  DECLARE err INT DEFAULT 0;
+
+  IF NEW.latencia_ms > 50.0 THEN
+    SET err = 1;
+  ELSEIF NEW.download_mbps < 10.0 THEN
+    SET err = 2;
+  ELSEIF NEW.upload_mbps < 10.0 THEN
+    SET err = 3;
+  ELSEIF NEW.perda_pacotes > 2 THEN
+    SET err = 4;
+  ELSEIF NEW.rtt_avg > 200.0 THEN
+    SET err = 5;
+  END IF;
+
+  IF err > 0 THEN
     INSERT INTO erros_dados_rede (
-    raspberrypi_id,
-    timestamp,
-    latencia_ms,
-    perda_pacotes,
-    download_mbps,
-    upload_mbps,
-    rtt_min,
-    rtt_avg,
-    rtt_max,
-    rtt_mdev,
-    num_aps
-    )
-    VALUES (
-    NEW.raspberrypi_id,
-    NEW.timestamp,
-    NEW.latencia_ms,
-    NEW.perda_pacotes,
-    NEW.download_mbps,
-    NEW.upload_mbps,
-    NEW.rtt_min,
-    NEW.rtt_avg,
-    NEW.rtt_max,
-    NEW.rtt_mdev,
-    NEW.num_aps
+      raspberrypi_id,
+      timestamp,
+      latencia_ms,
+      perda_pacotes,
+      download_mbps,
+      upload_mbps,
+      rtt_min,
+      rtt_avg,
+      rtt_max,
+      rtt_mdev,
+      num_aps,
+      err_num
+    ) VALUES (
+      NEW.raspberrypi_id,
+      NEW.timestamp,
+      NEW.latencia_ms,
+      NEW.perda_pacotes,
+      NEW.download_mbps,
+      NEW.upload_mbps,
+      NEW.rtt_min,
+      NEW.rtt_avg,
+      NEW.rtt_max,
+      NEW.rtt_mdev,
+      NEW.num_aps,
+      err
     );
   END IF;
-END;//
+END;
+//
 
 DELIMITER ;
+
