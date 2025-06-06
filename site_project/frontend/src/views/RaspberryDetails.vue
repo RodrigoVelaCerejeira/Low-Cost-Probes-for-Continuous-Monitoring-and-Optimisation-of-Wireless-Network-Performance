@@ -18,9 +18,6 @@
             <li class="text-lg"><strong>Last Record:</strong> {{ selectedRaspberry.ultimo_registro }}</li>
           </ul>
         </div>
-        <button @click="exportExcelById(selectedRaspberry.id)"
-          class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Export
-          Data</button>
       </div>
 
       <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full ">
@@ -51,7 +48,7 @@
       <iframe class="rounded-lg shadow-lg"
         :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=1&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
-        
+
       <iframe class="rounded-lg shadow-lg"
         :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=4&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
