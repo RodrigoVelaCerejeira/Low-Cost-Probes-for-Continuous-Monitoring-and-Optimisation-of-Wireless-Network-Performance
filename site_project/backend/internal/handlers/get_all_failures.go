@@ -6,28 +6,15 @@ import (
 
 	"example.com/backend-pic/api"
 	"example.com/backend-pic/internal/database"
-	"github.com/go-chi/chi"
 
 	log "github.com/sirupsen/logrus"
 )
 
-func GetFailuresPerTime(w http.ResponseWriter, r *http.Request) {
-	t := chi.URLParam(r, "time_period")
-	var time int
-	if t == "lastday" {
-		time = 24
-	} else if t == "lasthour" {
-		time = 1
-	} else {
-		api.InternalErrorHandler(w)
-		return
-	}
+func GetAllFailures(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.DB.Query(`
 		SELECT raspberrypi_id, timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps
 		FROM erros_dados_rede
-		WHERE timestamp >= NOW() - INTERVAL ? HOUR
-		GROUP BY raspberrypi_id;
-		`, time)
+		`)
 
 	if err != nil {
 		log.Error(err)
