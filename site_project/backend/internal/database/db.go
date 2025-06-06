@@ -10,12 +10,11 @@ import (
 var DB *sql.DB
 
 type Raspberry struct {
-	Id              int      `json:"id"`
-	Mac_Address     string   `json:"mac"`
-	Ultimo_registro string   `json:"ultimo_registro"`
-	HasError        bool     `json:"has_error"`
-	Failures        []string `json:"failures"`
-	Location        string   `json:"location"`
+	Id              int    `json:"id"`
+	Mac_Address     string `json:"mac"`
+	Ultimo_registro string `json:"ultimo_registro"`
+	HasError        bool   `json:"has_error"`
+	Location        string `json:"location"`
 }
 
 type Report struct {
@@ -30,6 +29,7 @@ type Report struct {
 	Rtt_max        float64 `json:"rtt_max"`
 	Rtt_mdev       float64 `json:"rtt_mdev"`
 	Num_aps        int     `json:"num_aps"`
+	Failure        int     `json:"failure"`
 }
 
 type Aps struct {

@@ -12,7 +12,7 @@ import (
 
 func GetAllFailures(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.DB.Query(`
-		SELECT raspberrypi_id, timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps
+		SELECT raspberrypi_id, timestamp, latencia_ms, perda_pacotes, download_mbps, upload_mbps, rtt_min, rtt_avg, rtt_max, rtt_mdev, num_aps, err_num
 		FROM erros_dados_rede
 		`)
 
@@ -37,6 +37,7 @@ func GetAllFailures(w http.ResponseWriter, r *http.Request) {
 			&r.Rtt_max,
 			&r.Rtt_mdev,
 			&r.Num_aps,
+			&r.Failure,
 		); err != nil {
 			continue
 		}
