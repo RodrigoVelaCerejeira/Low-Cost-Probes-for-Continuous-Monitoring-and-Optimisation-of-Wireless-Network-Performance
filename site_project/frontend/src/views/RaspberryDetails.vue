@@ -2,8 +2,7 @@
   <div class="min-h-screen flex flex-col p-36 items-center justify-around">
     <div class="h-[500px] flex gap-8 w-full">
 
-      <div
-        class="flex-2 h-full w-1/3 bg-white rounded-3xl p-8 text-gray-800">
+      <div class="flex-2 h-full w-1/3 bg-white rounded-3xl p-8 text-gray-800">
         <h2 class="text-3xl font-bold">Raspberry Pi</h2>
 
         <div class="h-max flex flex-col items-center">
@@ -20,11 +19,11 @@
           </ul>
         </div>
         <button @click="exportExcelById(selectedRaspberry.id)"
-          class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Export Data</button>
+          class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">Export
+          Data</button>
       </div>
 
-      <div
-        class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full ">
+      <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full ">
         <h2 class="m-4 text-2xl font-semibold ">APs</h2>
         <div class="overflow-y-auto max-h-96 rounded-xl shadow">
           <table class="min-w-full divide-y divide-gray-700 bg-white">
@@ -50,20 +49,25 @@
     </div>
     <div v-if="selectedRaspberry" class="grid grid-cols-1 gap-6 mt-8 w-full">
       <iframe class="rounded-lg shadow-lg"
-        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=1&__feature.dashboardSceneSolo`"
+        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=1&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
+        
       <iframe class="rounded-lg shadow-lg"
-        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=4&__feature.dashboardSceneSolo`"
+        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=4&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
+
       <iframe class="rounded-lg shadow-lg"
-        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746138776000&to=1746191135000&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=5&__feature.dashboardSceneSolo`"
+        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=5&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
+
       <iframe class="rounded-lg shadow-lg"
-        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=3&__feature.dashboardSceneSolo`"
+        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=3&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
+
       <iframe class="rounded-lg shadow-lg"
-        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=1746156683173&to=1746199883173&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=2&__feature.dashboardSceneSolo`"
+        :src="`http://192.92.147.85:3000/d-solo/dekod82b0yyo0b/raspberry-pis?orgId=1&from=now-24h&to=now&timezone=browser&var-raspberry=${selectedRaspberry.id}&panelId=2&__feature.dashboardSceneSolo`"
         width="100%" height="400"></iframe>
+
     </div>
   </div>
 </template>
