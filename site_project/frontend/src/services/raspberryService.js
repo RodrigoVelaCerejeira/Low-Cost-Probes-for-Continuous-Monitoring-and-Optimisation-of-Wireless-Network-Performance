@@ -32,7 +32,7 @@ export const fetchNullRaspberries = async () => {
 
 export const fetchFailuresLastHour = async () => {
   try {
-    const response = await axios.get('http://192.92.147.85:3001/raspberry/lasthour');
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/failures/lasthour');
     return response.data;
   } catch (error) {
     console.error('Error finding Raspberry Pis with failures in the last hour:', error);
@@ -42,7 +42,7 @@ export const fetchFailuresLastHour = async () => {
 
 export const fetchFailuresLastDay = async () => {
   try {
-    const response = await axios.get('http://192.92.147.85:3001/raspberry/lastday');
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/failures/lastday');
     return response.data;
   } catch (error) {
     console.error('Error finding Raspberry Pis with failures in the last day:', error);
@@ -52,7 +52,7 @@ export const fetchFailuresLastDay = async () => {
 
 export const fetchAllFailures = async () => {
   try {
-    const response = await axios.get('http://192.92.147.85:3001/raspberry/allFailures');
+    const response = await axios.get('http://192.92.147.85:3001/raspberry/failures');
     return response.data;
   } catch (error) {
     console.error('Error finding all Raspberry Pis failures:', error);
@@ -83,7 +83,7 @@ export const fetchAPsById = async (id) => {
 export const fetchExcelData = async () => {
   try {
     const response = await axios.get('http://192.92.147.85:3001/raspberry/excel', {
-      responseType: 'blob', 
+      responseType: 'blob',
     });
 
     const blob = new Blob([response.data], {
@@ -108,8 +108,8 @@ export const fetchExcelData = async () => {
 
 export const fetchRaspberryDataById = async (id) => {
   try {
-    const response = await axios.get(`http://192.92.147.85:3001/raspberry/excel/${id}` , {
-    responseType: 'blob',
+    const response = await axios.get(`http://192.92.147.85:3001/raspberry/excel/${id}`, {
+      responseType: 'blob',
     });
 
     const blob = new Blob([response.data], {

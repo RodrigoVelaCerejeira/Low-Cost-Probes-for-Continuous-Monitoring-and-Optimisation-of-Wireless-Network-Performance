@@ -155,13 +155,11 @@
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-300 text-gray-800">
-          <template v-for="(failureList, raspberryId) in failures" :key="raspberryId">
-            <tr v-for="failure in failureList" :key="failure.time + failure.type + raspberryId">
-              <td class="px-6 py-4">{{ raspberryId }}</td>
-              <td class="px-6 py-4">{{ failure.type }}</td>
-              <td class="px-6 py-4">{{ failure.time }}</td>
-            </tr>
-          </template>
+          <tr v-for="f in failures" :key="f">
+            <td class="px-6 py-4">{{ f.raspberrypi_id }}</td>
+            <td class="px-6 py-4">Mensagem a definir com o Joao</td>
+            <td class="px-6 py-4">{{ f.timestamp }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -283,8 +281,6 @@ async function getSpecificFailures(raspberryId, period) {
       failures = await fetchFailuresLastHour();
     } else if (period === "day") {
       failures = await fetchFailuresLastDay();
-    } else {
-      throw new Error("Invalid period specified");
     }
 
     const specificFailures = {};
@@ -343,7 +339,7 @@ function checkStatusChange() {
 
 onMounted(async () => {
   nullIds.value = await fetchNullRaspberries();
-  const response = await fetchRaspberryPis();
+  let response = await fetchRaspberryPis();
   raspberries.value = response;
 
   response = await fetchAllFailures();
