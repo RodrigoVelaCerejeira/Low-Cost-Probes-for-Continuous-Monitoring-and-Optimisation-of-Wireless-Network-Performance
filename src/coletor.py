@@ -1,3 +1,5 @@
+import traceback
+from datetime import datetime
 import re
 from logging import error
 import time
@@ -204,15 +206,19 @@ def inserir_dados(latencia, perda_pacotes, download, upload, rtt_min, rtt_avg, r
 # Executar os dados
 while True:
     if __name__ == "__main__":
-        print("A comecar a ler os valores")
-        latencia, perda_pacotes, rtt_min, rtt_avg, rtt_max, rtt_mdev = medir_ping()
-        download, upload = medir_download(), medir_upload()
-        aps = get_aps()
-        print("Acabou de ler os valores")
+        try:
+            print(datetime.now(), "A comecar a ler os valores")
+            latencia, perda_pacotes, rtt_min, rtt_avg, rtt_max, rtt_mdev = medir_ping()
+            download, upload = medir_download(), medir_upload()
+            aps = get_aps()
+            print(datetime.now(), "Acabou de ler os valores")
 
-        print("A inserir dados na tabela local")
-        inserir_dados(latencia, perda_pacotes, download, upload,
-                      rtt_min, rtt_avg, rtt_max, rtt_mdev, aps)
-        print("Acabou de inserir na tabela local")
+            print(datetime.now(), "A inserir dados na tabela local")
+            inserir_dados(latencia, perda_pacotes, download, upload,
+                          rtt_min, rtt_avg, rtt_max, rtt_mdev, aps)
+            print(datetime.now(), "Acabou de inserir na tabela local")
+        except Exception as e:
+            print(datetime.now(), "ERRO:", e)
+            traceback.print_exc()
 
         time.sleep(60)
