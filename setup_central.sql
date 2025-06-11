@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS dados_rede (
     rtt_max FLOAT,
     rtt_mdev FLOAT,
     num_aps INT,
-    FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)
+    FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS erros_dados_rede (
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS erros_dados_rede (
     rtt_mdev FLOAT,
     num_aps INT,
     err_num INT,
-    FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)
+    FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS all_aps (
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS all_aps (
   bssid VARCHAR(50),
   rate INT,
   sig INT,
-  FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id)
+  FOREIGN KEY (raspberrypi_id) REFERENCES raspberrypis(id) ON DELETE CASCADE
 );
 
 CREATE USER IF NOT EXISTS 'monitor'@'%' IDENTIFIED BY 'senha_segura';
