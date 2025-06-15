@@ -20,11 +20,12 @@
         </div>
       </div>
 
-      <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full ">
-        <h2 class="m-4 text-2xl font-semibold ">APs</h2>
-        <div class="overflow-y-auto max-h-96 rounded-xl shadow">
+      <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full flex flex-col">
+        <h2 class="m-4 text-2xl font-semibold">APs</h2>
+        <p class="text-sm">Last Record: {{ selectedRaspberry.ultimo_registro }}</p>
+        <div class="flex-1 overflow-y-auto rounded-xl shadow">
           <table class="min-w-full divide-y divide-gray-700 bg-white">
-            <thead class="bg-indigo-50 ext-gray-700 sticky top-0">
+            <thead class="bg-indigo-50 text-gray-700 sticky top-0">
               <tr>
                 <th class="px-6 py-3 text-left text-sm font-medium uppercase">ssid</th>
                 <th class="px-6 py-3 text-left text-sm font-medium uppercase">bssid</th>

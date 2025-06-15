@@ -67,6 +67,13 @@
 
       <div class="mt-4 flex justify-end">
 
+        <button @click="exportData" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
+            hover:scale-105
+            disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
+            bg-indigo-600 text-white hover:bg-indigo-700 mr-8">
+          Export Data
+        </button>
+
         <button @click="openPopup(selectedRaspberries[0])" :disabled="selectedRaspberries.length !== 1" class="px-6 py-2 rounded-lg shadow transition duration-300 ease-in-out
             hover:scale-105
             disabled:bg-transparent disabled:text-gray-400 disabled:border disabled:border-gray-400
@@ -100,13 +107,14 @@
         <div v-else class="px-6 py-4">
           <h3 class="text-lg font-medium mb-2">Failures last hour:</h3>
           <ul v-if="Object.keys(selectedFailures).length > 0">
-            <li v-for="failure in selectedFailures" :key="failureType">
+            <li v-for="failureType in Object.keys(selectedFailures)" :key="failureType">
               <strong>
-                <template v-if="failure === 1">High Latency</template>
-                <template v-else-if="failure === 2">Low Download Speed</template>
-                <template v-else-if="failure === 3">Low Upload Speed</template>
-                <template v-else-if="failure === 4">Packet Loss</template>
-                <template v-else-if="failure === 5">High RTT</template>
+                <template v-if="failureType === 'latency'">High Latency</template>
+                <template v-else-if="failureType === 'download_speed'">Low Download Speed</template>
+                <template v-else-if="failureType === 'upload_speed'">Low Upload Speed</template>
+                <template v-else-if="failureType === 'packet_loss'">Packet Loss</template>
+                <template v-else-if="failureType === 'round_trip_time'">High RTT</template>
+                <template v-else>{{ failureType }}</template>
               </strong>
             </li>
           </ul>
@@ -114,13 +122,14 @@
           <br>
           <h3 class="text-lg font-medium mb-2">Failures last day:</h3>
           <ul v-if="Object.keys(selectedFailuresDay).length > 0">
-            <li v-for="failure in Object.keys(selectedFailuresDay)" :key="failureType">
+            <li v-for="failureType in Object.keys(selectedFailuresDay)" :key="failureType">
               <strong>
-                <template v-if="failure === 1">High Latency</template>
-                <template v-else-if="failure === 2">Low Download Speed</template>
-                <template v-else-if="failure === 3">Low Upload Speed</template>
-                <template v-else-if="failure === 4">Packet Loss</template>
-                <template v-else-if="failure === 5">High RTT</template>
+                <template v-if="failureType === 'latency'">High Latency</template>
+                <template v-else-if="failureType === 'download_speed'">Low Download Speed</template>
+                <template v-else-if="failureType === 'upload_speed'">Low Upload Speed</template>
+                <template v-else-if="failureType === 'packet_loss'">Packet Loss</template>
+                <template v-else-if="failureType === 'round_trip_time'">High RTT</template>
+                <template v-else>{{ failureType }}</template>
               </strong>
             </li>
           </ul>
@@ -148,11 +157,7 @@
         <tbody class="divide-y divide-gray-300 text-gray-800">
           <tr v-for="f in failures" :key="f">
             <td class="px-6 py-4">{{ f.raspberrypi_id }}</td>
-            <td class="px-6 py-4" v-if="f.failure === 1">High Latency</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 2">Low Download Speed</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 3">Low Upload Speed</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 4">Packet Loss</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 5">High RTT</td>
+            <td class="px-6 py-4">Mensagem a definir com o Joao</td>
             <td class="px-6 py-4">{{ f.timestamp }}</td>
           </tr>
         </tbody>
@@ -298,7 +303,6 @@ const selectedFailures = ref({});
 const selectedFailuresDay = ref({});
 
 async function openPopup(raspberryId) {
-  selectedFailures.value = await getSpecificFailures(raspberryId, "hour");
   selectedFailuresDay.value = await getSpecificFailures(raspberryId, "day");
   console.log("selectedFailures:", selectedFailures.value);
   isPopupVisible.value = true;
