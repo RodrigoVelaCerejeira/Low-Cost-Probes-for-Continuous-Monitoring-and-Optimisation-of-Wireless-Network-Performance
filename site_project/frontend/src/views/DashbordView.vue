@@ -3,8 +3,8 @@
   <div class="flex flex-col gap-8 px-8 pb-24">
     <div class="bg-white text-gray-800 rounded-3xl p-8 w-full h-full overflow-y-scroll">
       <h2 class="text-2xl font-semibold mb-4">Raspberry Pi Status</h2>
-      <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl overflow-hidden">
-        <thead class="bg-gray-100 text-gray-700">
+      <table class="min-w-full divide-y divide-gray-700 bg-white">
+        <thead class="bg-indigo-50 text-gray-700 sticky top-0">
           <tr>
             <th class="px-6 py-3 text-left text-sm font-medium uppercase">Select</th>
             <th class="px-6 py-3 text-left text-sm font-medium uppercase">MAC Address</th>
@@ -135,30 +135,44 @@
     </div>
 
 
-    <div class="bg-white text-gray-800 rounded-3xl shadow-xl p-8 w-full h-full overflow-y-scroll">
+    <div class="bg-white text-gray-800 rounded-3xl shadow-xl p-8 w-full h-full">
       <h2 class="text-2xl font-semibold mb-4">Failures</h2>
-      <table class="min-w-full divide-y divide-gray-700 bg-white rounded-xl shadow overflow-hidden">
-        <thead class="bg-gray-100 text-gray-700">
-          <tr>
-            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Raspberry Id</th>
-            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Failure</th>
-            <th class="px-6 py-3 text-left text-sm font-medium uppercase">Time</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-300 text-gray-800">
-          <tr v-for="f in failures" :key="f">
-            <td class="px-6 py-4">{{ f.raspberrypi_id }}</td>
-            <td class="px-6 py-4" v-if="f.failure === 1">High Latency</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 2">Low Download Speed</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 3">Low Upload Speed</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 4">Packet Loss</td>
-            <td class="px-6 py-4" v-else-if="f.failure === 5">High RTT</td>
-            <td class="px-6 py-4">{{ f.timestamp }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
+      <!-- Scrollable wrapper -->
+      <div class="max-h-[400px] overflow-y-auto">
+        <table class="min-w-full divide-y divide-gray-700 bg-white">
+          <thead class="bg-indigo-50 text-gray-700 sticky top-0">
+            <tr>
+              <th @click="toggleSort('raspberrypi_id')"
+                class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">
+                Raspberry Id
+              </th>
+              <th @click="toggleSort('failure')"
+                class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">
+                Failure
+              </th>
+              <th @click="toggleSort('timestamp')"
+                class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">
+                Time
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-300 text-gray-800">
+            <tr v-for="f in sortedFailures" :key="f">
+              <td class="px-6 py-4">{{ f.raspberrypi_id }}</td>
+              <td class="px-6 py-4">
+                <span v-if="f.failure === 1">High Latency</span>
+                <span v-else-if="f.failure === 2">Low Download Speed</span>
+                <span v-else-if="f.failure === 3">Low Upload Speed</span>
+                <span v-else-if="f.failure === 4">Packet Loss</span>
+                <span v-else-if="f.failure === 5">High RTT</span>
+              </td>
+              <td class="px-6 py-4">{{ f.timestamp }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div v-if="graphsVisible" class="mt-6 space-y-6">
       <iframe
         src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
@@ -187,8 +201,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFailuresLastHour, fetchAllFailures, fetchExcelData } from '@/services/raspberryService';
+import { ref, onMounted, computed } from 'vue';
+import { fetchNullRaspberries, fetchRaspberryPis, fetchFailuresLastDay, fetchFailuresLastHour, fetchAllFailures } from '@/services/raspberryService';
 import { toast } from 'vue3-toastify';
 
 const nullIds = ref([]);
@@ -198,7 +212,36 @@ const selectedRaspberries = ref([]);
 const graphsVisible = ref(false);
 const previousStatuses = ref({});
 const showViewDataNotification = ref(false);
-const failures = ref({});
+const failures = ref([])
+const sortKey = ref('raspberrypi_id');
+const sortAsc = ref(true);
+
+const toggleSort = (key) => {
+  if (sortKey.value === key) {
+    sortAsc.value = !sortAsc.value;
+  } else {
+    sortKey.value = key;
+    sortAsc.value = true;
+  }
+};
+
+const sortedFailures = computed(() => {
+  return [...failures.value].sort((a, b) => {
+    const aVal = a[sortKey.value];
+    const bVal = b[sortKey.value];
+
+    if (sortKey.value === 'timestamp') {
+      return sortAsc.value
+        ? new Date(aVal) - new Date(bVal)
+        : new Date(bVal) - new Date(aVal);
+    }
+
+    if (aVal < bVal) return sortAsc.value ? -1 : 1;
+    if (aVal > bVal) return sortAsc.value ? 1 : -1;
+    return 0;
+  });
+});
+
 
 
 function getRaspberryById(id) {
@@ -218,10 +261,6 @@ function navigateToRaspberry(id) {
 function viewSelectedData() {
   graphsVisible.value = selectedRaspberries.value.length > 0;
   notifyUser();
-}
-
-async function exportData() {
-  await fetchExcelData();
 }
 
 

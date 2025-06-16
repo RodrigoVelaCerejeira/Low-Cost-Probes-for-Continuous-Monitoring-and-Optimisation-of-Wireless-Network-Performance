@@ -27,14 +27,19 @@
           <table class="min-w-full divide-y divide-gray-700 bg-white">
             <thead class="bg-indigo-50 text-gray-700 sticky top-0">
               <tr>
-                <th class="px-6 py-3 text-left text-sm font-medium uppercase">ssid</th>
-                <th class="px-6 py-3 text-left text-sm font-medium uppercase">bssid</th>
-                <th class="px-6 py-3 text-left text-sm font-medium uppercase">rate</th>
-                <th class="px-6 py-3 text-left text-sm font-medium uppercase">signal</th>
+                <th @click="toggleSort('ssid')"
+                  class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">ssid
+                </th>
+                <th @click="toggleSort('bssid')"
+                  class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">bssid</th>
+                <th @click="toggleSort('rate')"
+                  class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">rate</th>
+                <th @click="toggleSort('signal')"
+                  class="px-6 py-3 text-left text-sm font-medium uppercase cursor-pointer select-none">signal</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-300 text-gray-800">
-              <tr v-for="ap in raspberryAPs" :key="ap.ssid">
+              <tr v-for="ap in sortedRaspberryAPs" :key="ap.ssid">
                 <td class="px-6 py-4"> {{ ap.ssid }} </td>
                 <td class="px-6 py-4"> {{ ap.bssid }} </td>
                 <td class="px-6 py-4"> {{ ap.rate }} Mbits/s</td>
@@ -71,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { fetchRaspberryById, fetchAPsById, fetchRaspberryDataById } from '@/services/raspberryService'; '@/services/raspberryService'
@@ -79,24 +84,43 @@ import RaspberrySelector from '@/components/RaspberrySelector.vue';
 
 const selectedRaspberry = ref(null);
 const raspberryAPs = ref([]);
-const raspberryId = ref(null);
+const sortKey = ref('ssid');
+const sortAsc = ref(true);
 
 const route = useRoute();
 const router = useRouter();
 const initialId = route.params.id;
 
-const exportExcelById = async (raspberryId) => {
-  if (!raspberryId) {
-    alert('Select a Raspberry Pi first');
-    return;
-  }
-
-  try {
-    await fetchRaspberryDataById(raspberryId);
-  } catch (error) {
-    alert('Error exporting data');
+const toggleSort = (key) => {
+  if (sortKey.value === key) {
+    sortAsc.value = !sortAsc.value;
+  } else {
+    sortKey.value = key;
+    sortAsc.value = true;
   }
 };
+
+const sortedRaspberryAPs = computed(() => {
+  return [...raspberryAPs.value].sort((a, b) => {
+    const key = sortKey.value;
+    let aVal = a[key];
+    let bVal = b[key];
+
+    // Normalize case for strings
+    if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+    if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+
+    // Convert to numbers if both look numeric
+    if (!isNaN(aVal) && !isNaN(bVal)) {
+      aVal = Number(aVal);
+      bVal = Number(bVal);
+    }
+
+    if (aVal < bVal) return sortAsc.value ? -1 : 1;
+    if (aVal > bVal) return sortAsc.value ? 1 : -1;
+    return 0;
+  });
+});
 
 async function onRaspberrySelected(raspberry) {
   selectedRaspberry.value = await fetchRaspberryById(raspberry.id);
