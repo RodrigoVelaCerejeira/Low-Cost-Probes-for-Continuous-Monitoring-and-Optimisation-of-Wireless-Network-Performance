@@ -92,9 +92,6 @@
         <div v-if="getRaspberryById(selectedRaspberries[0]) && !is_online(getRaspberryById(selectedRaspberries[0]))"
           class="px-6 py-4">
           Raspberry Pi {{ selectedRaspberries[0] }} is offline.
-          <button @click="closePopup" class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-            Close
-          </button>
         </div>
 
         <div v-else class="px-6 py-4">

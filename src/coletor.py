@@ -1,3 +1,5 @@
+#TODO:
+# tirar o external e local ip
 import traceback
 from datetime import datetime
 import re

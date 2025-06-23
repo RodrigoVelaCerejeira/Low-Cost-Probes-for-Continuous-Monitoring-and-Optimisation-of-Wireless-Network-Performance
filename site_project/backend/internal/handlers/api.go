@@ -23,10 +23,8 @@ func Handler(r *chi.Mux) {
 		router.Get("/aps", GetAPs)
 		router.Get("/aps/{id}", GetAPsById)
 		router.Get("/nulls", GetNullsById)
-		router.Get("/excel/{id}", ExportToExcelById)
 		router.Get("/failures/{time_period}", GetFailuresPerTime)
 		router.Get("/failures", GetAllFailures)
-		router.Get("/excel", ExportToExcel)
 		router.Get("/{id}", GetProductById)
 	})
 	r.Options("/*", func(w http.ResponseWriter, r *http.Request) {
