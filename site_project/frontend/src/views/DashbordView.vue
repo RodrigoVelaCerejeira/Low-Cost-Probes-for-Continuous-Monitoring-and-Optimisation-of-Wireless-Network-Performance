@@ -172,24 +172,24 @@
     </div>
     <div v-if="graphsVisible" class="mt-6 space-y-6">
       <iframe
-        src="http://192.92.147.85:3000/d-solo/deklyiib84pvka/rtt-info?orgId=1&from=1738363070265&to=1746135470265&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        :src="`http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=now-24h&to=now&${raspberriesQuery}&panelId=5&__feature.dashboardSceneSolo`" 
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
       <iframe
-        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1743642384000&to=1743642385000&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        :src="`http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=now-24h&to=now&${raspberriesQuery}&panelId=1&__feature.dashboardSceneSolo`"
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
       <iframe
-        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1744120391807&to=1746712391807&timezone=browser&panelId=2&__feature.dashboardSceneSolo"
+        :src="`http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=now-24h&to=now&${raspberriesQuery}&panelId=2&__feature.dashboardSceneSolo`" 
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
 
       <iframe
-        src="http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=1746138776000&to=1746762000000&timezone=browser&panelId=4&__feature.dashboardSceneSolo"
+        :src="`http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=now-24h&to=now&${raspberriesQuery}&panelId=4&__feature.dashboardSceneSolo`" 
         class="w-full h-96 rounded-lg shadow-lg"></iframe>
 
       <iframe
-        src="http://192.92.147.85:3000/d-solo/deklx7j72vfuod/perda-de-pacot?orgId=1&from=1746166173709&to=1746187773709&timezone=browser&panelId=1&__feature.dashboardSceneSolo"
+        :src="`http://192.92.147.85:3000/d-solo/eehucflethslca/graficos-iniciais?orgId=1&from=now-24h&to=now&${raspberriesQuery}&panelId=6&__feature.dashboardSceneSolo`"
         width="100%" height="330" frameborder="0" class="rounded-lg shadow-lg"></iframe>
 
     </div>
@@ -212,6 +212,14 @@ const showViewDataNotification = ref(false);
 const failures = ref([])
 const sortKey = ref('raspberrypi_id');
 const sortAsc = ref(true);
+
+const raspberriesQuery = computed(() => {
+  if (!selectedRaspberries.value.length) return '';
+  return selectedRaspberries.value
+    .slice(0, 3)
+    .map(id => `var-raspberry=${encodeURIComponent(id)}`)
+    .join('&');
+});
 
 const toggleSort = (key) => {
   if (sortKey.value === key) {
